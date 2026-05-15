@@ -1,0 +1,2650 @@
+﻿
+
+
+
+
+
+210 Dictionaries and Sets
+
+
+
+6.1 Introduction 6.2 Dictionaries 
+6.2.1 Creating a Dictionary
+6.2.2 Iterating through a Dictionary 6.2.3 Basic Dictionary Operations 6.2.4 Dictionary Methods keys and 
+values
+6.2.5 Dictionary Comparisons
+6.2.6 Example: Dictionary of Student Grades 6.2.7 Example: Word Counts
+6.2.8 Dictionary Method update 6.2.9 Dictionary Comprehensions
+
+6.3 Sets 
+6.3.1 Comparing Sets
+6.3.2 Mathematical Set Operations
+6.3.3 Mutable Set Operators and Methods 6.3.4 Set Comprehensions
+6.4 Intro to Data Science: Dynamic Visualizations 
+6.4.1 How Dynamic Visualization Works
+6.4.2 Implementing a Dynamic Visualization
+6.5 Wrap-Up 
+Exercises
+
+
+6.1 Introduction
+We’ve discussed three built-in sequence collections—strings, lists and tuples. Now, we consider the built-in non-sequence collections—dictionaries and sets. A dictionary is an unordered collection which stores key–value pairs that map immutable keys to values, just as a conventional dictionary maps words to definitions. A set is an unordered collection of unique immutable elements.
+
+6.2 Dictionaries
+A dictionary associates keys with values. Each key maps to a specific value. The following table contains examples of dictionaries with their keys, key types, values and value types: 
+
+
+Keys
+
+Country names Decimal numbers States
+Hospital patients Baseball players Metric measurements
+Inventory codes
+
+Key type
+
+str 
+int 
+str 
+str 
+str 
+str 
+str 
+
+Values
+
+Internet country codes Roman numerals Agricultural products Vital signs
+Batting averages Abbreviations
+Quantity in stock
+
+Value type
+
+str 
+str 
+list of str 
+tuple of ints and floats float 
+str 
+int 
+
+
+Unique Keys
+A dictionary’s keys must be immutable (such as strings, numbers or tuples) and unique (that is, no duplicates). Multiple keys can have the same value, such as two different inven-tory codes that have the same quantity in stock. 
+
+6.2.1 Creating a Dictionary
+You can create a dictionary by enclosing in curly braces, }, a comma-separated list of key–value pairs, each of the form key: value. You can create an empty dictionary with {}. 
+{ 
+
+
+
+
+
+
+6.2 Dictionaries	211
+
+
+Let’s create a dictionary with the country-name keys 'Finland', South Africa' and 'Nepal' and their corresponding Internet country code values 'fi', 'za' and 'np': 
+' 
+In [1]: country_codes = {'Finland': 'fi', 'South Africa': 'za', 
+ ...: 	   'Nepal': 'np'}
+ ...: 
+
+In [2]: country_codes
+Out[2]: {'Finland': 'fi', 'South Africa': 'za', 'Nepal': 'np'}
+When you output a dictionary, its comma-separated list of key–value pairs is always enclosed in curly braces. Because dictionaries are unordered collections, the display order can differ from the order in which the key–value pairs were added to the dictionary. In snippet [2]’s output the key–value pairs are displayed in the order they were inserted, but do not write code that depends on the order of the key–value pairs. 
+
+Determining if a Dictionary Is Empty 
+The built-in function len returns the number of key–value pairs in a dictionary:
+In [3]: len(country_codes) Out[3]: 3
+You can use a dictionary as a condition to determine if it’s empty—a non-empty diction-ary evaluates to True: 
+In [4]: if country_codes:
+ ...:  print('country_codes is not empty')
+ ...: else:
+ ...:  print('country_codes is empty')
+ ...: 
+country_codes is not empty
+An empty dictionary evaluates to False. To demonstrate this, in the following code we call method clear to delete the dictionary’s key–value pairs, then in snippet [6] we recall and re-execute snippet [4]:
+In [5]: country_codes.clear()
+
+In [6]: if country_codes:
+ ...:  print('country_codes is not empty')
+ ...: else:
+ ...:  print('country_codes is empty')
+ ...: 
+country_codes is empty
+
+Self Check
+1	(Fill-In) 	 can be thought of as unordered collections in which each value is accessed through its corresponding key. 
+Answer: Dictionaries.
+2	(True/False) Dictionaries may contain duplicate keys.
+Answer: False. Dictionary keys must be unique. However, multiple keys may have the same value.
+
+
+
+
+
+
+212 Dictionaries and Sets
+
+
+3	(IPython Session) Create a dictionary named states that maps three state abbrevia-tions to their state names, then display the dictionary.
+Answer:
+In [1]: states = {'VT': 'Vermont', 'NH': 'New Hampshire', 
+ ...: 	  'MA': 'Massachusetts'}
+ ...:
+
+In [2]: states
+Out[2]: {'VT': 'Vermont', 'NH': 'New Hampshire', 'MA': 'Massachusetts'}
+
+6.2.2 Iterating through a Dictionary 
+The following dictionary maps month-name strings to int values representing the num-bers of days in the corresponding month. Note that multiple keys can have the same value:
+In [1]: days_per_month = {'January': 31, 'February': 28, 'March': 31}
+
+In [2]: days_per_month
+Out[2]: {'January': 31, 'February': 28, 'March': 31}
+Again, the dictionary’s string representation shows the key–value pairs in their insertion order, but this is not guaranteed because dictionaries are unordered. We’ll show how to process keys in sorted order later in this chapter.
+The following for statement iterates through days_per_month’s key–value pairs. Dic-tionary method items returns each key–value pair as a tuple, which we unpack into month and days: 
+
+In [3]: for month, days in days_per_month.items():
+ ...:  print(f'{month} has {days} days')
+ ...: 
+January has 31 days February has 28 days March has 31 days
+
+Self Check
+1	(Fill-In) Dictionary method 	 returns each key–value pair as a tuple. Answer: items.
+
+6.2.3 Basic Dictionary Operations
+For this section, let’s begin by creating and displaying the dictionary roman_numerals. We intentionally provide the incorrect value 100 for the key 'X', which we’ll correct shortly: 
+In [1]: roman_numerals = {'I': 1, 'II': 2, 'III': 3, 'V': 5, 'X': 100}
+
+In [2]: roman_numerals
+Out[2]: {'I': 1, 'II': 2, 'III': 3, 'V': 5, 'X': 100}
+
+Accessing the Value Associated with a Key Let’s get the value associated with the key 'V':
+In [3]: roman_numerals['V'] Out[3]: 5
+
+
+
+
+
+
+6.2 Dictionaries	213
+
+
+Updating the Value of an Existing Key–Value Pair
+You can update a key’s associated value in an assignment statement, which we do here to replace the incorrect value associated with the key 'X':
+In [4]: roman_numerals['X'] = 10
+
+In [5]: roman_numerals
+Out[5]: {'I': 1, 'II': 2, 'III': 3, 'V': 5, 'X': 10}
+
+Adding a New Key–Value Pair
+Assigning a value to a nonexistent key inserts the key–value pair in the dictionary:
+In [6]: roman_numerals['L'] = 50
+
+In [7]: roman_numerals
+Out[7]: {'I': 1, 'II': 2, 'III': 3, 'V': 5, 'X': 10, 'L': 50}
+String keys are case sensitive. Assigning to a nonexistent key inserts a new key–value pair. This may be what you intend, or it could be a logic error.
+
+Removing a Key–Value Pair
+You can delete a key–value pair from a dictionary with the del statement:
+In [8]: del roman_numerals['III']
+
+In [9]: roman_numerals
+Out[9]: {'I': 1, 'II': 2, 'V': 5, 'X': 10, 'L': 50}
+You also can remove a key–value pair with the dictionary method pop, which returns the value for the removed key:
+In [10]: roman_numerals.pop('X') Out[10]: 10
+
+In [11]: roman_numerals
+Out[11]: {'I': 1, 'II': 2, 'V': 5, 'L': 50}
+
+Attempting to Access a Nonexistent Key Accessing a nonexistent key results in a KeyError: 
+In [12]: roman_numerals['III']
+-------------------------------------------------------------------------
+KeyError   	 Traceback (most recent call last) <ipython-input-12-ccd50c7f0c8b> in <module>()
+----> 1 roman_numerals['III']
+
+KeyError: 'III'
+You can prevent this error by using dictionary method get, which normally returns its argument’s corresponding value. If that key is not found, get returns None. IPython does not display anything when None is returned in snippet [13]. If you specify a second argu-ment to get, it returns that value if the key is not found:
+In [13]: roman_numerals.get('III')
+
+In [14]: roman_numerals.get('III', 'III not in dictionary') Out[14]: 'III not in dictionary'
+
+In [15]: roman_numerals.get('V') Out[15]: 5
+
+
+
+
+
+
+214 Dictionaries and Sets
+
+
+Testing Whether a Dictionary Contains a Specified Key
+Operators in and not in can determine whether a dictionary contains a specified key: 
+In [16]: 'V' in roman_numerals Out[16]: True
+
+In [17]: 'III' in roman_numerals Out[17]: False
+
+In [18]: 'III' not in roman_numerals Out[18]: True
+
+Self Check
+1	(True/False) Assigning to a nonexistent dictionary key causes an exception. 
+Answer: False. Assigning to a nonexistent key inserts a new key–value pair. This may be what you intend, or it could be a logic error if you incorrectly specify the key.
+2	(Fill-In) What does an expression of the following form do when the key is in the dic-tionary? 
+dictionaryName[key] = value
+Answer: It updates the value associated with the key, replacing the original value.
+3	(IPython Session) String dictionary keys are case sensitive. Confirm this by using the following dictionary and assigning 10 to the key 'x'—doing so adds a new key–value pair rather than correcting the value for the key 'X': 
+roman_numerals = {'I': 1, 'II': 2, 'III': 3, 'V': 5, 'X': 100}
+Answer:
+In [1]: roman_numerals = {'I': 1, 'II': 2, 'III': 3, 'V': 5, 'X': 100}
+
+In [2]: roman_numerals['x'] = 10
+
+In [3]: roman_numerals
+Out[3]: {'I': 1, 'II': 2, 'III': 3, 'V': 5, 'X': 100, 'x': 10}
+
+6.2.4 Dictionary Methods keys and values 
+Earlier, we used dictionary method items to iterate through tuples of a dictionary’s key–value pairs. Similarly, methods keys and values can be used to iterate through only a dic-tionary’s keys or values, respectively:
+In [1]: months = {'January': 1, 'February': 2, 'March': 3}
+
+In [2]: for month_name in months.keys():
+ ...:  print(month_name, end='  ')
+ ...: 
+January  February  March 
+
+In [3]: for month_number in months.values():
+ ...:  print(month_number, end='  ')
+ ...: 
+1  2  3  
+
+
+
+
+
+
+6.2 Dictionaries	215
+
+
+Dictionary Views
+Dictionary methods items, keys and values each return a view of a dictionary’s data. When you iterate over a view, it “sees” the dictionary’s current contents—it does not have its own copy of the data.
+To show that views do not maintain their own copies of a dictionary’s data, let’s first save the view returned by keys into the variable months_view, then iterate through it: 
+In [4]: months_view = months.keys()
+
+In [5]: for key in months_view:
+ ...:  print(key, end='  ')
+ ...: 
+January  February  March 
+Next, let’s add a new key–value pair to months and display the updated dictionary: In [6]: months['December'] = 12
+
+In [7]: months
+Out[7]: {'January': 1, 'February': 2, 'March': 3, 'December': 12}
+Now, let’s iterate through months_view again. The key we added above is indeed dis-played: 
+In [8]: for key in months_view:
+ ...:  print(key, end='  ')
+ ...: 
+January  February  March  December 
+Do not modify a dictionary while iterating through a view. According to Section 4.10.1 of the Python Standard Library documentation,1 either you’ll get a RuntimeError or the loop might not process all of the view’s values. 
+
+Converting Dictionary Keys, Values and Key–Value Pairs to Lists
+You might occasionally need lists of a dictionary’s keys, values or key–value pairs. To obtain such a list, pass the view returned by keys, values or items to the built-in list function. Modifying these lists does not modify the corresponding dictionary:
+In [9]: list(months.keys())
+Out[9]: ['January', 'February', 'March', 'December']
+
+In [10]: list(months.values()) Out[10]: [1, 2, 3, 12]
+
+In [11]: list(months.items())
+Out[11]: [('January', 1), ('February', 2), ('March', 3), ('December', 12)]
+
+Processing Keys in Sorted Order 
+To process keys in sorted order, you can use built-in function sorted as follows:
+In [12]: for month_name in sorted(months.keys()):
+  ...:     print(month_name, end='  ')
+  ...:   
+February  December  January  March 
+
+
+1.    https://docs.python.org/3/library/stdtypes.html#dictionary-view-objects.
+
+
+
+
+
+
+216 Dictionaries and Sets
+
+
+Self Check
+1	(Fill-In) Dictionary method 	 returns an unordered list of the dictionary’s keys. 
+Answer: keys.
+2	(True/False) A view has its own copy of the corresponding data from the dictionary. Answer: False. A view does not have its own copy of the corresponding data from the dic-tionary. As the dictionary changes, each view updates dynamically.
+3	(IPython Session) For the following dictionary, create lists of its keys, values and items and show those lists.
+roman_numerals = {'I': 1, 'II': 2, 'III': 3, 'V': 5}
+Answer:
+In [1]: roman_numerals = {'I': 1, 'II': 2, 'III': 3, 'V': 5}
+
+In [2]: list(roman_numerals.keys()) Out[2]: ['I', 'II', 'III', 'V']
+
+In [3]: list(roman_numerals.values()) Out[3]: [1, 2, 3, 5]
+
+In [4]: list(roman_numerals.items())
+Out[4]: [('I', 1), ('II', 2), ('III', 3), ('V', 5)]
+
+6.2.5 Dictionary Comparisons
+The comparison operators == and != can be used to determine whether two dictionaries have identical or different contents. An equals (==) comparison evaluates to True if both dictionaries have the same key–value pairs, regardless of the order in which those key–value pairs were added to each dictionary: 
+In [1]: country_capitals1 = {'Belgium': 'Brussels',
+ ...: 	  'Haiti': 'Port-au-Prince'}
+ ...: 
+
+In [2]: country_capitals2 = {'Nepal': 'Kathmandu',
+ ...: 	 'Uruguay': 'Montevideo'}
+ ...: 
+
+In [3]: country_capitals3 = {'Haiti': 'Port-au-Prince',
+ ...: 	  'Belgium': 'Brussels'}
+ ...: 
+
+In [4]: country_capitals1 == country_capitals2 Out[4]: False
+
+In [5]: country_capitals1 == country_capitals3 Out[5]: True
+
+In [6]: country_capitals1 != country_capitals2 Out[6]: True
+
+
+
+
+
+
+6.2 Dictionaries	217
+
+
+Self Check
+1	(True/False) The == comparison evaluates to True only if both dictionaries have the same key–value pairs in the same order.
+Answer: False. The == comparison evaluates to True if both dictionaries have the same key–value pairs, regardless of their order.
+
+
+6.2.6 Example: Dictionary of Student Grades
+The script in Fig. 6.1 represents an instructor’s grade book as a dictionary that maps each student’s name (a string) to a list of integers containing that student’s grades on three exams. In each iteration of the loop that displays the data (lines 13–17), we unpack a key–value pair into the variables name and grades containing one student’s name and the cor-responding list of three grades. Line 14 uses built-in function sum to total a given student’s grades, then line 15 calculates and displays that student’s average by dividing total by the number of grades for that student (len(grades)). Lines 16–17 keep track of the total of all four students’ grades and the number of grades for all the students, respectively. Line 19 prints the class average of all the students’ grades on all the exams.   
+
+
+1 # fig06_01.py
+2 """Using a dictionary to represent an instructor's grade book.""" 3 grade_book = {  
+4	  'Susan': [92, 85, 100], 5	  'Eduardo': [83, 95, 79], 6	  'Azizi': [91, 89, 82],  7	  'Pantipa': [97, 91, 92] 8 }
+9
+10 all_grades_total = 0 11 all_grades_count = 0 12
+13 for name, grades in grade_book.items(): 14	  total = sum(grades)
+15	  print(f'Average for {name} is {total/len(grades):.2f}') 16	  all_grades_total += total
+17	  all_grades_count += len(grades) 18
+19 print(f"Class's average is: {all_grades_total / all_grades_count:.2f}")
+
+Average for Susan is 92.33 Average for Eduardo is 85.67 Average for Azizi is 87.33 Average for Pantipa is 93.33 Class's average is: 89.67
+
+Fig. 6.1 | Instructor’s gradebook dictionary.
+
+
+
+
+
+
+218 Dictionaries and Sets
+
+
+6.2.7 Example: Word Counts2 
+The script in Fig. 6.2 builds a dictionary to count the number of occurrences of each word in a string. Lines 4–5 create a string text that we’ll break into words—a process known as tokenizing a string. Python automatically concatenates strings separated by whitespace in parentheses. Line 7 creates an empty dictionary. The dictionary’s keys will be the unique words, and its values will be integer counts of how many times each word appears in text. 
+
+1 # fig06_02.py
+2 """Tokenizing a string and counting unique words."""
+3
+4 text = ('this is sample text with several words '
+5	   'this is more sample text with some different words')
+6
+7 word_counts = {}
+8
+9 # count occurrences of each unique word 10 for word in text.split():
+11	  if word in word_counts: 
+12	   word_counts[word] += 1  # update existing key-value pair 13      else:
+14	   word_counts[word] = 1  # insert new key-value pair 15
+16 print(f'{"WORD":<12}COUNT') 17
+18 for word, count in sorted(word_counts.items()): 19	  print(f'{word:<12}{count}')
+20
+21 print('\nNumber of unique words:', len(word_counts))
+
+WORD     COUNT different   1
+is  	  2 more     1 sample   2 several     1 some     1 text     2 this     2 with     2 words    2
+Number of unique words: 10
+
+Fig. 6.2 | Tokenizing a string and producing word counts.
+
+Line 10 tokenizes text by calling string method split, which separates the words using the method’s delimiter string argument. If you do not provide an argument, split uses a space. The method returns a list of tokens (that is, the words in text). Lines 10–14
+
+2.    Techniques like word frequency counting are often used to analyze published works. For example, some people believe that the works of William Shakespeare actually might have been written by Sir Francis Bacon, Christopher Marlowe or others. Comparing the word frequencies of their works with those of Shakespeare can reveal writing-style similarities. We’ll look at other document-analysis techniques in the “Natural Language Processing (NLP)” chapter.
+
+
+
+
+
+
+6.2 Dictionaries	219
+
+
+iterate through the list of words. For each word, line 11 determines whether that word (the key) is already in the dictionary. If so, line 12 increments that word’s count; otherwise, line 14 inserts a new key–value pair for that word with an initial count of 1. 
+Lines 16–21 summarize the results in a two-column table containing each word and its corresponding count. The for statement in lines 18 and 19 iterates through the dictionary’s key–value pairs. It unpacks each key and value into the variables word and count, then displays them in two columns. Line 21 displays the number of unique words.
+
+Python Standard Library Module collections 
+The Python Standard Library already contains the counting functionality that we imple-mented using the dictionary and the loop in lines 10–14. The module collections con-tains the type Counter, which receives an iterable and summarizes its elements. Let’s reimplement the preceding script in fewer lines of code with Counter:
+In [1]: from collections import Counter
+
+In [2]: text = ('this is sample text with several words '
+ ...: 	  'this is more sample text with some different words')
+ ...: 
+
+In [3]: counter = Counter(text.split())
+
+In [4]: for word, count in sorted(counter.items()):
+ ...:  print(f'{word:<12}{count}')
+ ...: 
+different   1 is   	 2 more 	 1 sample   2 several  1 some 	 1 text 	 2 this 	 2 with 	 2 words    2
+
+In [5]: print('Number of unique keys:', len(counter.keys())) Number of unique keys: 10
+Snippet [3] creates the Counter, which summarizes the list of strings returned by text.split(). In snippet [4], Counter method items returns each string and its associ-ated count as a tuple. We use built-in function orted to get a list of these tuples in ascend-ing order. By default sorted orders the tuples by their first elements. If those are identical, then it looks at the second element, and so on. The for statement iterates over the result-ing sorted list, displaying each word and count in two columns.
+s 
+
+Self Check
+1	(Fill-In) String method 	 tokenizes a string using the delimiter provided in the method’s string argument.
+Answer: split.
+2	(IPython Session) Use a comprehension to create a list of 50 random integers in the range 1–5. Summarize them with a Counter. Display the results in two-column format.
+
+
+
+
+
+
+220 Dictionaries and Sets
+
+
+Answer:
+In [1]: import random
+
+In [2]: numbers = [random.randrange(1, 6) for i in range(50)]
+
+In [3]: from collections import Counter
+
+In [4]: counter = Counter(numbers)
+
+In [5]: for value, count in sorted(counter.items()):
+ ...:  print(f'{value:<4}{count}')
+ ...: 
+1   9 2   6 3   13 4   10 5   12
+
+6.2.8 Dictionary Method update
+You may insert and update key–value pairs using dictionary method update. First, let’s create an empty country_codes dictionary:
+In [1]: country_codes = {}
+The following update call receives a dictionary of key–value pairs to insert or update: In [2]: country_codes.update({'South Africa': 'za'})
+
+In [3]: country_codes
+Out[3]: {'South Africa': 'za'}
+Method update can convert keyword arguments into key–value pairs to insert. The following call automatically converts the parameter name Australia into the string key 'Australia' and associates the value 'ar' with that key:
+In [4]: country_codes.update(Australia='ar')
+
+In [5]: country_codes
+Out[5]: {'South Africa': 'za', 'Australia': 'ar'}
+Snippet [4] provided an incorrect country code for Australia. Let’s correct this by using another keyword argument to update the value associated with 'Australia':
+In [6]: country_codes.update(Australia='au')
+
+In [7]: country_codes
+Out[7]: {'South Africa': 'za', 'Australia': 'au'}
+Method update also can receive an iterable object containing key–value pairs, such as a list of two-element tuples.
+
+6.2.9 Dictionary Comprehensions
+Dictionary comprehensions provide a convenient notation for quickly generating dic-tionaries, often by mapping one dictionary to another. For example, in a dictionary with unique values, you can reverse the key–value pairs: 
+
+
+
+
+
+
+6.3 Sets	221
+
+
+In [1]: months = {'January': 1, 'February': 2, 'March': 3}
+
+In [2]: months2 = {number: name for name, number in months.items()}
+
+In [3]: months2
+Out[3]: {1: 'January', 2: 'February', 3: 'March'}
+Curly braces delimit a dictionary comprehension, and the expression to the left of the for clause specifies a key–value pair of the form key: value. The comprehension iterates through onths.items(), unpacking each key–value pair tuple into the variables ame and number. The expression number: name reverses the key and value, so the new dictionary maps the month numbers to the month names. 
+m	n 
+What if months contained duplicate values? As these become the keys in months2, attempting to insert a duplicate key simply updates the existing key’s value. So if 'Febru-ary' and 'March' both mapped to 2 originally, the preceding code would have produced 
+{1: 'January', 2: 'March'}
+
+A dictionary comprehension also can map a dictionary’s values to new values. The fol-lowing comprehension converts a dictionary of names and lists of grades into a dictionary of names and grade-point averages. The variables k and v commonly mean key and value:
+In [4]: grades = {'Sue': [98, 87, 94], 'Bob': [84, 95, 91]}
+
+In [5]: grades2 = {k: sum(v) / len(v) for k, v in grades.items()}
+
+In [6]: grades2
+Out[6]: {'Sue': 93.0, 'Bob': 90.0}
+The comprehension unpacks each tuple returned by grades.items() into k (the name) and v (the list of grades). Then, the comprehension creates a new key–value pair with the key k and the value of sum(v) / len(v), which averages the list’s elements.
+
+Self Check
+1	(IPython Session) Use a dictionary comprehension to create a dictionary of the num-bers 1–5 mapped to their cubes:
+Answer:
+In [1]: {number: number ** 3 for number in range(1, 6)} Out[1]: {1: 1, 2: 8, 3: 27, 4: 64, 5: 125}
+
+6.3 Sets
+A set is an unordered collection of unique values. Sets may contain only immutable objects, like strings, ints, floats and tuples that contain only immutable elements. Though sets are iterable, they are not sequences and do not support indexing and slicing with square brackets, []. Dictionaries also do not support slicing.
+
+Creating a Set with Curly Braces
+The following code creates a set of strings named colors: 
+In [1]: colors = {'red', 'orange', 'yellow', 'green', 'red', 'blue'}
+
+In [2]: colors
+Out[2]: {'blue', 'green', 'orange', 'red', 'yellow'}
+
+
+
+
+
+
+222 Dictionaries and Sets
+
+
+Notice that the duplicate string 'red' was ignored (without causing an error). An import-ant use of sets is duplicate elimination, which is automatic when creating a set. Also, the resulting set’s values are not displayed in the same order as they were listed in snippet [1]. Though the color names are displayed in sorted order, sets are unordered. You should not write code that depends on the order of their elements. 
+
+Determining a Set’s Length
+You can determine the number of items in a set with the built-in len function: 
+In [3]: len(colors) Out[3]: 5
+
+Checking Whether a Value Is in a Set
+You can check whether a set contains a particular value using the in and not in operators:
+In [4]: 'red' in colors Out[4]: True
+
+In [5]: 'purple' in colors Out[5]: False 
+
+In [6]: 'purple' not in colors Out[6]: True 
+
+Iterating Through a Set
+Sets are iterable, so you can process each set element with a for loop:
+In [7]: for color in colors:
+ ...:  print(color.upper(), end=' ')
+ ...: 
+RED GREEN YELLOW BLUE ORANGE 
+Sets are unordered, so there’s no significance to the iteration order.
+
+Creating a Set with the Built-In set Function
+You can create a set from another collection of values by using the built-in set function—here we create a list that contains several duplicate integer values and use that list as set’s argument:
+In [8]: numbers = list(range(10)) + list(range(5))
+
+In [9]: numbers
+Out[9]: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4]
+
+In [10]: set(numbers)
+Out[10]: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+If you need to create an empty set, you must use the set function with empty parentheses, rather than empty braces, {}, which represent an empty dictionary:
+In [11]: set() Out[11]: set()
+Python displays an empty set as set() to avoid confusion with Python’s string represen-tation of an empty dictionary ({}).
+
+
+
+
+
+
+6.3 Sets	223
+
+
+Frozenset: An Immutable Set Type
+Sets are mutable—you can add and remove elements, but set elements must be immutable. Therefore, a set cannot have other sets as elements. A frozenset is an immutable set—it cannot be modified after you create it, so a set can contain frozensets as elements. The built-in function frozenset creates a frozenset from any iterable. 
+
+Self Check
+1	(True/False) Sets are collections of unique mutable and immutable objects. Answer: False. Sets are collections of unique immutable objects. 
+2	(Fill-In) You can create a set from another collection of values by using the built-in
+ function. Answer: set.
+3	(IPython Session) Assign the following string to variable text, then split it into tokens with string method split and create a set from the results. Display the unique words in sorted order.
+'to be or not to be that is the question'
+Answer:
+In [1]: text = 'to be or not to be that is the question'
+
+In [2]: unique_words = set(text.split())
+
+In [3]: for word in sorted(unique_words):
+ ...:  print(word, end='  ')
+ ...: 
+be  is  not  or  question  that  the  to 
+
+6.3.1 Comparing Sets
+Various operators and methods can be used to compare sets. The following sets contain the same values, so == returns True and != returns False. 
+In [1]: {1, 3, 5} == {3, 5, 1} Out[1]: True
+
+In [2]: {1, 3, 5} != {3, 5, 1} Out[2]: False
+The < operator tests whether the set to its left is a proper subset of the one to its right—that is, all the elements in the left operand are in the right operand, and the sets are not equal:
+In [3]: {1, 3, 5} < {3, 5, 1} Out[3]: False
+
+In [4]: {1, 3, 5} < {7, 3, 5, 1} Out[4]: True
+The <= operator tests whether the set to its left is an improper subset of the one to its right—that is, all the elements in the left operand are in the right operand, and the sets might be equal:
+
+
+
+
+
+
+224 Dictionaries and Sets
+
+
+In [5]: {1, 3, 5} <= {3, 5, 1} Out[5]: True
+
+In [6]: {1, 3} <= {3, 5, 1} Out[6]: True
+You may also check for an improper subset with the set method issubset:
+In [7]: {1, 3, 5}.issubset({3, 5, 1}) Out[7]: True
+
+In [8]: {1, 2}.issubset({3, 5, 1}) Out[8]: False
+The > operator tests whether the set to its left is a proper superset of the one to its right—that is, all the elements in the right operand are in the left operand, and the left operand has more elements: 
+In [9]: {1, 3, 5} > {3, 5, 1} Out[9]: False
+
+In [10]: {1, 3, 5, 7} > {3, 5, 1} Out[10]: True
+The >= operator tests whether the set to its left is an improper superset of the one to its right—that is, all the elements in the right operand are in the left operand, and the sets might be equal:
+In [11]: {1, 3, 5} >= {3, 5, 1} Out[11]: True
+
+In [12]: {1, 3, 5} >= {3, 1} Out[12]: True
+
+In [13]: {1, 3} >= {3, 1, 7} Out[13]: False
+You may also check for an improper superset with the set method issuperset:
+In [14]: {1, 3, 5}.issuperset({3, 5, 1}) Out[14]: True
+
+In [15]: {1, 3, 5}.issuperset({3, 2}) Out[15]: False
+The argument to issubset or issuperset can be any iterable. When either of these meth-ods receives a non-set iterable argument, it first converts the iterable to a set, then performs the operation.
+
+Self Check
+1	(True/False) Sets may be compared with only the == and != comparison operators. Answer: False. All the comparison operators may be used to compare sets.
+2	(Fill-In) A subset is a(n) 	 subset of another set if all the subset’s elements are in the other set and the other set has more elements.
+Answer: proper.
+
+
+
+
+
+
+6.3 Sets	225
+
+
+3	(IPython Session) Use sets and issuperset to determine whether the characters of the string 'abc def ghi jkl mno' are a superset of the characters in the string 'hi mom'. Answer:
+In [1]: set('abc def ghi jkl mno').issuperset('hi mom') Out[1]: True
+
+6.3.2 Mathematical Set Operations
+This section presents the set type’s mathematical operators |, &, - and ^ and the corre-sponding methods. 
+
+Union 
+The union of two sets is a set consisting of all the unique elements from both sets. You can calculate the union with the | operator or with the set type’s union method:
+In [1]: {1, 3, 5} | {2, 3, 4} Out[1]: {1, 2, 3, 4, 5}
+
+In [2]: {1, 3, 5}.union([20, 20, 3, 40, 40]) Out[2]: {1, 3, 5, 20, 40}
+The operands of the binary set operators, like |, must both be sets. The corresponding set methods may receive any iterable object as an argument—we passed a list. When a math-ematical set method receives a non-set iterable argument, it first converts the iterable to a set, then applies the mathematical operation. Again, though the new sets’ string represen-tations show the values in ascending order, you should not write code that depends on this.
+
+Intersection 
+The intersection of two sets is a set consisting of all the unique elements that the two sets have in common. You can calculate the intersection with the & operator or with the set type’s intersection method:
+In [3]: {1, 3, 5} & {2, 3, 4} Out[3]: {3}
+
+In [4]: {1, 3, 5}.intersection([1, 2, 2, 3, 3, 4, 4]) Out[4]: {1, 3}
+
+Difference 
+The difference between two sets is a set consisting of the elements in the left operand that are not in the right operand. You can calculate the difference with the - operator or with the set type’s difference method:
+In [5]: {1, 3, 5} - {2, 3, 4} Out[5]: {1, 5}
+
+In [6]: {1, 3, 5, 7}.difference([2, 2, 3, 3, 4, 4]) Out[6]: {1, 5, 7}
+
+Symmetric Difference 
+The symmetric difference between two sets is a set consisting of the elements of both sets that are not in common with one another. You can calculate the symmetric difference with the ^ operator or with the set type’s symmetric_difference method:
+
+
+
+
+
+
+226 Dictionaries and Sets
+
+
+In [7]: {1, 3, 5} ^ {2, 3, 4} Out[7]: {1, 2, 4, 5}
+
+In [8]: {1, 3, 5, 7}.symmetric_difference([2, 2, 3, 3, 4, 4]) Out[8]: {1, 2, 4, 5, 7}
+
+Disjoint
+Two sets are disjoint if they do not have any common elements. You can determine this with the set type’s isdisjoint method:
+In [9]: {1, 3, 5}.isdisjoint({2, 4, 6}) Out[9]: True
+
+In [10]: {1, 3, 5}.isdisjoint({4, 6, 1}) Out[10]: False
+
+Self Check
+1	(Fill-In) Two sets are 	 if the sets do not have any common elements. Answer: disjoint.
+2	(IPython Session) Given the sets {10, 20, 30} and {5, 10, 15, 20}, use the mathe-matical set operators to produce the following sets:
+a) {30}
+b) {5, 15, 30}
+c) {5, 10, 15, 20, 30} d) {10, 20}
+Answer:
+In [1]: {10, 20, 30} - {5, 10, 15, 20} Out[1]: {30}
+
+In [2]: {10, 20, 30} ^ {5, 10, 15, 20} Out[2]: {5, 15, 30}
+
+In [3]: {10, 20, 30} | {5, 10, 15, 20} Out[3]: {5, 10, 15, 20, 30}
+
+In [4]: {10, 20, 30} & {5, 10, 15, 20} Out[4]: {10, 20}
+
+6.3.3 Mutable Set Operators and Methods
+The operators and methods presented in the preceding section each result in a new set. Here we discuss operators and methods that modify an existing set. 
+
+Mutable Mathematical Set Operations
+Like operator |, union augmented assignment |= performs a set union operation, but |= modifies its left operand:
+In [1]: numbers = {1, 3, 5}
+
+In [2]: numbers |= {2, 3, 4}
+
+In [3]: numbers
+Out[3]: {1, 2, 3, 4, 5}
+
+
+
+
+
+
+6.3 Sets	227
+
+
+Similarly, the set type’s update method performs a union operation modifying the set on which it’s called—the argument can be any iterable:
+In [4]: numbers.update(range(10))
+
+In [5]: numbers
+Out[5]: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+The other mutable set methods are:
+•	intersection augmented assignment &=
+•	difference augmented assignment -=
+•	symmetric difference augmented assignment ^=
+and their corresponding methods with iterable arguments are:
+•	intersection_update
+•	difference_update
+•	symmetric_difference_update
+
+Methods for Adding and Removing Elements
+Set method add inserts its argument if the argument is not already in the set; otherwise, the set remains unchanged:
+In [6]: numbers.add(17)
+
+In [7]: numbers.add(3)
+
+In [8]: numbers
+Out[8]: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17}
+Set method emove removes its argument from the set—a eyError occurs if the value is not in the set:
+K 
+r 
+In [9]: numbers.remove(3)
+
+In [10]: numbers
+Out[10]: {0, 1, 2, 4, 5, 6, 7, 8, 9, 17}
+Method discard also removes its argument from the set but does not cause an exception if the value is not in the set. 
+You also can remove an arbitrary set element and return it with pop, but sets are unor-dered, so you do not know which element will be returned:
+In [11]: numbers.pop() Out[11]: 0
+
+In [12]: numbers
+Out[12]: {1, 2, 4, 5, 6, 7, 8, 9, 17}
+A KeyError occurs if the set is empty when you call pop. Finally, method clear empties the set on which it’s called:
+In [13]: numbers.clear()
+
+In [14]: numbers Out[14]: set()
+
+
+
+
+
+
+228 Dictionaries and Sets
+
+
+Self Check
+1	(True/False) Set method pop returns the first element added to the set. Answer: False. Set method pop returns an arbitrary set element.
+2	(Fill-In) Set method 	 performs a union operation, modifying the set on which it’s called.
+Answer: update.
+
+6.3.4 Set Comprehensions
+Like dictionary comprehensions, you define set comprehensions in curly braces. Let’s cre-ate a new set containing only the unique even values in the list numbers:
+In [1]: numbers = [1, 2, 2, 3, 4, 5, 6, 6, 7, 8, 9, 10, 10]
+
+In [2]: evens = {item for item in numbers if item % 2 == 0}
+
+In [3]: evens
+Out[3]: {2, 4, 6, 8, 10}
+
+6.4 Intro to Data Science: Dynamic Visualizations
+The preceding chapter’s Intro to Data Science section introduced visualization. We sim-ulated rolling a six-sided die and used the Seaborn and Matplotlib visualization libraries
+to create a publication-quality static bar plot showing the frequencies and percentages of each roll value. In this section, we make things “come alive” with dynamic visualizations. 
+
+The Law of Large Numbers
+When we introduced random-number generation, we mentioned that if the random mod-ule’s randrange function indeed produces integers at random, then every number in the specified range has an equal probability (or likelihood) of being chosen each time the func-tion is called. For a six-sided die, each value 1 through 6 should occur one-sixth of the time, so the probability of any one of these values occurring is 1/6th or about 16.667%.  
+In the next section, we create and execute a dynamic (that is, animated) die-rolling simulation script. In general, you’ll see that the more rolls we attempt, the closer each die value’s percentage of the total rolls gets to 16.667% and the heights of the bars gradually become about the same. This is a manifestation of the law of large numbers. 
+
+Self Check
+1	(Fill-In) As we toss a coin an increasing number of times, we expect the percentages of heads and tails to become closer to 50% each. This is a manifestation of 	. Answer: the law of large numbers.
+
+6.4.1 How Dynamic Visualization Works 
+The plots produced with Seaborn and Matplotlib in the previous chapter’s Intro to Data Science section help you analyze the results for a fixed number of die rolls after the simu-lation completes. This section’s enhances that code with the Matplotlib animation mod-ule’s FuncAnimation function, which updates the bar plot dynamically. You’ll see the bars, die frequencies and percentages “come alive,” updating continuously as the rolls occur. 
+
+
+
+
+
+
+6.4 Intro to Data Science: Dynamic Visualizations	229
+
+
+Animation Frames
+FuncAnimation drives a frame-by-frame animation. Each animation frame specifies everything that should change during one plot update. Stringing together many of these updates over time creates the animation effect. You decide what each frame displays with a function you define and pass to FuncAnimation.
+Each animation frame will:
+•	 roll the dice a specified number of times (from 1 to as many as you’d like), updat-ing die frequencies with each roll,
+•	clear the current plot,
+•	create a new set of bars representing the updated frequencies, and
+•	create new frequency and percentage text for each bar.
+Generally, displaying more frames-per-second yields smoother animation. For example, video games with fast-moving elements try to display at least 30 frames-per-second and often more. Though you’ll specify the number of milliseconds between animation frames, the actual number of frames-per-second can be affected by the amount of work you per-form in each frame and the speed of your computer’s processor. This example displays an animation frame every 33 milliseconds—yielding approximately 30 (1000 / 33) frames-per-second. Try larger and smaller values to see how they affect the animation. Experimen-tation is important in developing the best visualizations.
+
+Running RollDieDynamic.py 
+In the previous chapter’s Intro to Data Science section, we developed the static visualiza-tion interactively so you could see how the code updates the bar plot as you execute each statement. The actual bar plot with the final frequencies and percentages was drawn only once.
+For this dynamic visualization, the screen results update frequently so that you can see the animation. Many things change continuously—the lengths of the bars, the frequencies and percentages above the bars, the spacing and labels on the axes and the total number of die rolls shown in the plot’s title. For this reason, we present this visualization as a script, rather than interactively developing it.
+The script takes two command-line arguments:
+•	number_of_frames—The number of animation frames to display. This value determines the total number of times that FuncAnimation updates the graph. For each animation frame, FuncAnimation calls a function that you define (in this example, update) to specify how to change the plot.
+•	rolls_per_frame—The number of times to roll the die in each animation frame. We’ll use a loop to roll the die this number of times, summarize the results, then update the graph with bars and text representing the new frequencies.
+To understand how we use these two values, consider the following command: ipython RollDieDynamic.py 6000 1
+In this case, FuncAnimation calls our update function 6000 times, rolling one die per frame for a total of 6000 rolls. This enables you to see the bars, frequencies and percentages
+
+
+
+
+
+
+230 Dictionaries and Sets
+
+
+update one roll at a time. On our system, this animation took about 3.33 minutes (6000 frames / 30 frames-per-second / 60 seconds-per-minute) to show you only 6000 die rolls. 
+Displaying animation frames to the screen is a relatively slow input–output-bound operation compared to the die rolls, which occur at the computer’s super fast CPU speeds. If we roll only one die per animation frame, we won’t be able to run a large number of rolls in a reasonable amount of time. Also, for small numbers of rolls, you’re unlikely to see the die percentages converge on their expected 16.667% of the total rolls. 
+To see the law of large numbers in action, you can increase the execution speed by rolling the die more times per animation frame. Consider the following command: 
+ipython RollDieDynamic.py 10000 600
+
+In this case, FuncAnimation will call our update function 10,000 times, performing 600 rolls-per-frame for a total of 6,000,000 rolls. On our system, this took about 5.55 minutes (10,000 frames / 30 frames-per-second / 60 seconds-per-minute), but displayed approxi-mately 18,000 rolls-per-second (30 frames-per-second * 600 rolls-per-frame), so we could quickly see the frequencies and percentages converge on their expected values of about 1,000,000 rolls per face and 16.667% per face.
+Experiment with the numbers of rolls and frames until you feel that the program is helping you visualize the results most effectively. It’s fun and informative to watch it run and to tweak it until you’re satisfied with the animation quality.
+
+Sample Executions
+We took the following four screen captures during each of two sample executions. In the first, the screens show the graph after just 64 die rolls, then again after 604 of the 6000 total die rolls. Run this script live to see over time how the bars update dynamically. In the second execution, the screen captures show the graph after 7200 die rolls and again after 166,200 out of the 6,000,000 rolls. With more rolls, you can see the percentages closing in on their expected values of 16.667% as predicted by the law of large numbers.  
+Execute 6000 animation frames rolling the die once per frame: ipython RollDieDynamic.py 6000 1
+
+
+
+
+
+
+6.4 Intro to Data Science: Dynamic Visualizations	231
+
+
+Execute 10,000 animation frames rolling the die 600 times per frame: ipython RollDieDynamic.py 10000 600
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Self Check
+1	(Fill-In) A(n) 	 specifies everything that should change during one plot update. Stringing together many of these over time creates the animation effect. 
+Answer: animation frame.
+2     (True/False) Generally, displaying fewer frames-per-second yields smoother animation. Answer: False. Generally, displaying more frames-per-second yields smoother animation. 
+3	(True/False) The actual number of frames-per-second is affected only by the millisec-ond interval between animation frames. 
+Answer: False. The actual number of frames-per-second also can be affected by the amount of work performed in each frame and the speed of your computer’s processor. 
+
+6.4.2 Implementing a Dynamic Visualization 
+The script we present in this section uses the same Seaborn and Matplotlib features shown in the previous chapter’s Intro to Data Science section. We reorganized the code for use with Matplotlib’s animation capabilities. 
+
+Importing the Matplotlib animation Module
+We focus primarily on the new features used in this example. Line 3 imports the Matplot-lib animation module. 
+1 # RollDieDynamic.py
+2 """Dynamically graphing frequencies of die rolls.""" 3 from matplotlib import animation
+4 import matplotlib.pyplot as plt 5 import random 
+6 import seaborn as sns 7 import sys
+8
+
+
+
+
+
+
+232 Dictionaries and Sets
+
+
+Function update
+Lines 9–27 define the update function that FuncAnimation calls once per animation frame. This function must provide at least one argument. Lines 9–10 show the beginning of the function definition. The parameters are:
+•	frame_number—The next value from FuncAnimation’s frames argument, which we’ll discuss momentarily. Though FuncAnimation requires the update function to have this parameter, we do not use it in this update function.
+•	rolls—The number of die rolls per animation frame.
+•	faces—The die face values used as labels along the graph’s x-axis.
+•	frequencies—The list in which we summarize the die frequencies. We discuss the rest of the function’s body in the next several subsections.
+9 def update(frame_number, rolls, faces, frequencies):
+10	  """Configures bar plot contents for each animation frame."""
+
+
+Function update: Rolling the Die and Updating the frequencies List
+Lines 12–13 roll the die rolls times and increment the appropriate frequencies element for each roll. Note that we subtract 1 from the die value (1 through 6) before incrementing the corresponding frequencies element—as you’ll see, frequencies is a six-element list (defined in line 36), so its indices are 0 through 5.
+11	  # roll die and update frequencies 12	  for i in range(rolls):
+13	   frequencies[random.randrange(1, 7) - 1] += 1 14
+
+
+Function update: Configuring the Bar Plot and Text 
+Line 16 in function update calls the matplotlib.pyplot module’s cla (clear axes) func-tion to remove the existing bar plot elements before drawing new ones for the current ani-mation frame. We discussed the code in lines 17–27 in the previous chapter’s Intro to Data Science section. Lines 17–20 create the bars, set the bar plot’s title, set the x- and y-axis labels and scale the plot to make room for the frequency and percentage text above each bar. Lines 23–27 display the frequency and percentage text.  
+15	  # reconfigure plot for updated die frequencies
+16	  plt.cla()  # clear old contents contents of current Figure
+17	  axes = sns.barplot(faces, frequencies, palette='bright')  # new bars 18	  axes.set_title(f'Die Frequencies for {sum(frequencies):,} Rolls')
+19	  axes.set(xlabel='Die Value', ylabel='Frequency')  
+20	  axes.set_ylim(top=max(frequencies) * 1.10)  # scale y-axis by 10% 21
+22	  # display frequency & percentage above each patch (bar) 23	  for bar, frequency in zip(axes.patches, frequencies): 24         text_x = bar.get_x() + bar.get_width() / 2.0  
+25	   text_y = bar.get_height() 
+26	   text = f'{frequency:,}\n{frequency / sum(frequencies):.3%}' 27	   axes.text(text_x, text_y, text, ha='center', va='bottom') 28
+
+
+
+
+
+
+6.4 Intro to Data Science: Dynamic Visualizations	233
+
+
+Variables Used to Configure the Graph and Maintain State
+Lines 30 and 31 use the sys module’s argv list to get the script’s command-line argu-ments. Line 33 specifies the Seaborn 'whitegrid' style. Line 34 calls the matplot-lib.pyplot module’s figure function to get the Figure object in which FuncAnimation displays the animation. The function’s argument is the window’s title. As you’ll soon see, this is one of FuncAnimation’s required arguments. Line 35 creates a list containing the die face values 1–6 to display on the plot’s x-axis. Line 36 creates the six-element frequen-cies list with each element initialized to 0—we update this list’s counts with each die roll. 
+29 # read command-line arguments for number of frames and rolls per frame 30 number_of_frames = int(sys.argv[1])  
+31 rolls_per_frame = int(sys.argv[2])  32
+33 sns.set_style('whitegrid')  # white background with gray grid lines 34 figure = plt.figure('Rolling a Six-Sided Die')  # Figure for animation 35 values = list(range(1, 7))  # die faces for display on x-axis
+36 frequencies = [0] * 6  # six-element list of die frequencies 37
+
+Calling the animation Module’s FuncAnimation Function
+Lines 39–41 call the Matplotlib animation module’s FuncAnimation function to update the bar chart dynamically. The function returns an object representing the animation. Though this is not used explicitly, you must store the reference to the animation; other-wise, Python immediately terminates the animation and returns its memory to the system. 
+38 # configure and start animation that calls function update 39 die_animation = animation.FuncAnimation(
+40	  figure, update, repeat=False, frames=number_of_frames, interval=33, 41	  fargs=(rolls_per_frame, values, frequencies))
+42
+43 plt.show()  # display window FuncAnimation has two required arguments:
+•	figure—the Figure object in which to display the animation, and
+•	update—the function to call once per animation frame.
+In this case, we also pass the following optional keyword arguments:
+•     repeat—False terminates the animation after the specified number of frames. If True (the default), when the animation completes it restarts from the beginning.
+•	frames—The total number of animation frames, which controls how many times FunctAnimation calls update. Passing an integer is equivalent to passing a range—for example, 600 means range(600). FuncAnimation passes one value from this range as the first argument in each call to update.
+•	interval—The number of milliseconds (33, in this case) between animation frames (the default is 200). After each call to update, FuncAnimation waits 33 milliseconds before making the next call.
+•	fargs (short for “function arguments”)—A tuple of other arguments to pass to the function you specified in FuncAnimation’s second argument. The arguments you specify in the fargs tuple correspond to update’s parameters rolls, faces and frequencies (line 9).
+
+
+
+
+
+
+234 Dictionaries and Sets
+
+
+For a list of FuncAnimation’s other optional arguments, see
+https://matplotlib.org/api/_as_gen/ matplotlib.animation.FuncAnimation.html
+Finally, line 43 displays the window. 
+
+Self Check
+1	(Fill-In) The Matplotlib 	 module’s 	 function dynamically updates a visualization.
+Answer:animation, FuncAnimation.
+2	(Fill-In) FuncAnimation’s 	 keyword argument enables you to pass custom arguments to the function that’s called once per animation frame.
+Answer:fargs.
+
+6.5 Wrap-Up
+In this chapter, we discussed Python’s dictionary and set collections. We said what a dic-tionary is and presented several examples. We showed the syntax of key–value pairs and showed how to use them to create dictionaries with comma-separated lists of key–value pairs in curly braces, {}. You also created dictionaries with dictionary comprehensions. 
+You used square brackets, [], to retrieve the value corresponding to a key, and to insert and update key–value pairs. You also used the dictionary method update to change a key’s associated value. You iterated through a dictionary’s keys, values and items.
+You created sets of unique immutable values. You compared sets with the comparison operators, combined sets with set operators and methods, changed sets’ values with the mutable set operations and created sets with set comprehensions. You saw that sets are mutable. Frozensets are immutable, so they can be used as set and frozenset elements.
+In the Intro to Data Science section, we continued our visualization introduction by presenting the die-rolling simulation with a dynamic bar plot to make the law of large numbers “come alive.” In addition, to the Seaborn and Matplotlib features shown in the previous chapter’s Intro to Data Science section, we used Matplotlib’s FuncAnimation function to control a frame-by-frame animation. FuncAnimation called a function we defined that specified what to display in each animation frame.
+In the next chapter, we discuss array-oriented programming with the popular NumPy library. As you’ll see, NumPy’s ndarray collection can be up to two orders of magnitude faster than performing many of the same operations with Python’s built-in lists. This power will come in handy for today’s big data applications.
+
+Exercises
+Unless specified otherwise, use IPython sessions for each exercise.
+6.1	(Discussion: Dictionary Methods) Briefly explain the operation of each of the fol-lowing dictionary methods:
+a) add b) keys
+c) values d) items
+
+
+
+
+
+
+Exercises 	235
+
+
+6.2	(What’s Wrong with This Code?) The following code should display the unique words in the string text and the number of occurrences of each word.
+from collections import Counter
+text = ('to be or not to be that is the question') counter = Counter(text.split())
+for word, count in sorted(counter):
+  print(f'{word:<12}{count}')
+
+6.3	(What Does This Code Do?) The dictionary temperatures contains three Fahren-heit temperature samples for each of four days. What does the for statement do?
+temperatures = {   
+  'Monday': [66, 70, 74], 
+ 'Tuesday': [50, 56, 64],
+  'Wednesday': [75, 80, 83],
+  'Thursday': [67, 74, 81]
+}
+
+for k, v in temperatures.items():
+  print(f'{k}: {sum(v)/len(v):.2f}')
+
+6.4	(Fill in the Missing Code) In each of the following expressions, replace the ***s with a set operator that produces the result shown in the comment. The last operation should check whether the left operand is an improper subset of the right operand. For each of the first four expressions, specify the name of the set operation that produces the spec-ified result.
+a) {1, 2, 4, 8, 16} *** {1, 4, 16, 64, 256}  # {1,2,4,8,16,64,256} b) {1, 2, 4, 8, 16} *** {1, 4, 16, 64, 256}  # {1,4,16}
+c) {1, 2, 4, 8, 16} *** {1, 4, 16, 64, 256}  # {2,8}
+d) {1, 2, 4, 8, 16} *** {1, 4, 16, 64, 256}  # {2,8,64,256} e) {1, 2, 4, 8, 16} *** {1, 4, 16, 64, 256}  # False
+
+6.5	(Counting Duplicate Words) Write a script that uses a dictionary to determine and print the number of duplicate words in a sentence. Treat uppercase and lowercase letters the same and assume there is no punctuation in the sentence. Use the techniques you learned in Section 6.2.7. Words with counts larger than 1 have duplicates. 
+
+6.6	(Duplicate Word Removal) Write a function that receives a list of words, then de-termines and displays in alphabetical order only the unique words. Treat uppercase and lowercase letters the same. The function should use a set to get the unique words in the list. Test your function with several sentences. 
+
+6.7	(Character Counts) Recall that strings are sequences of characters. Use techniques similar to Fig. 6.2 to write a script that inputs a sentence from the user, then uses a diction-ary to summarize the number of occurrences of each letter. Ignore case, ignore blanks and assume the user does not enter any punctuation. Display a two-column table of the letters and their counts with the letters in sorted order. Challenge: Use a set operation to deter-mine which letters of the alphabet were not in the original string. 
+
+6.8       (Challenge: Writing the Word Equivalent of a Check Amount) In check-writing systems, it’s crucial to prevent alteration of check amounts. One common security method
+
+
+
+
+
+
+236 Dictionaries and Sets
+
+
+requires that the amount be written in numbers and spelled out in words as well. Even if someone can alter the numerical amount of the check, it’s tough to change the amount in words. Create a dictionary that maps numbers to their corresponding word equivalents. Write a script that inputs a numeric check amount that’s less than 1000 and uses the dic-tionary to write the word equivalent of the amount. For example, the amount 112.43 should be written as
+ONE HUNDRED TWELVE AND 43/100
+
+6.9	(Dictionary Manipulations) Using the following dictionary, which maps country names to Internet top-level domains (TLDs):
+tlds = {'Canada': 'ca', 'United States': 'us', 'Mexico': 'mx'}
+
+perform the following tasks and display the results:
+a) Check whether the dictionary contains the key 'Canada'. b) Check whether the dictionary contains the key 'France'.
+c) Iterate through the key–value pairs and display them in two-column format. d) Add the key–value pair 'Sweden' and 'sw' (which is incorrect).
+e) Update the value for the key 'Sweden' to 'se'.
+f) Use a dictionary comprehension to reverse the keys and values.
+g) With the result of part (f), use a dictionary comprehension to convert the coun-try names to all uppercase letters.
+
+6.10	(Set Manipulations) Using the following sets: 
+{'red', 'green', 'blue'}
+{'cyan', 'green', 'blue', 'magenta', 'red'}
+
+display the results of:
+a) comparing the sets using the each of the comparison operators. b) combining the sets using each of the mathematical set operators.
+
+6.11	(Analyzing the Game of Craps) Modify the script of Fig. 4.2 to play 1,000,000 games of craps. Use a wins dictionary to keep track of the number of games won for a par-ticular number of rolls. Similarly, use a losses dictionary to keep track of the number of games lost for a particular number of rolls. As the simulation proceeds, keep updating the dictionaries. 
+A typical key–value pair in the wins dictionary might be 
+4: 50217
+
+indicating that 50217 games were won on the 4th roll. Display a summary of the results including:
+a) the percentage of the total games played that were won. b) the percentage of the total games played that were lost.
+c) the percentages of the total games played that were won or lost on a given roll (column 2 of the sample output).
+d) the cumulative percentage of the total games played that were won or lost up to and including a given number of rolls (column 3 of the sample output).
+
+
+
+
+
+
+Exercises 	237
+
+
+Your output should be similar to the one below. 
+
+Percentage of wins: 50.2% Percentage of losses: 49.8%
+Percentage of wins/losses based on total number of rolls
+
+    % Resolved   	 Cumulative % Rolls   on this roll   of games resolved
+  1 	    30.10%   	  30.10%
+  2 	    20.80%   	  50.90%
+  3 	    14.10%   	  65.00%
+  4 	     9.90%   	  74.90%
+  5 	     7.40%   	  82.30%
+  6 	     4.60%   	  86.90%
+  7 	     3.70%   	  90.60%
+  8 	     2.40%   	  93.00%
+  9 	     1.90%   	  94.90%
+ 10 	     1.10%   	  96.00%
+ 11 	     0.90%   	  96.90%
+ 12 	     0.80%   	  97.70%
+ 13 	     0.80%   	  98.50%
+ 14 	     0.30%   	  98.80%
+ 15 	     0.30%   	  99.10%
+ 16 	     0.30%   	  99.40%
+ 17 	     0.50%   	  99.90%
+ 25 	     0.10%   	 100.00%
+
+6.12	(Translation Dictionary) Use an online translation tool such as Bing Microsoft Translator or Google Translate to translate English words to another language. Create a translations dictionary that maps the English words to their translations. Display a two-column table of translations.
+6.13	(Synonyms Dictionary) Use an online thesaurus to look up synonyms for five words, then create a synonyms dictionary that maps those words to lists containing three synonyms for each word. Display the dictionary’s contents as a key with an indented list of synonyms below it. 
+6.14	(Intro to Data Science: Dynamic Visualization of Coin Tossing) Modify your coin-tossing simulation from Exercise 5.31 to update the bar plot dynamically as you flip the coin. Use the techniques you learned in Section 6.4.2.
+6.15	(Intro to Data Science: Dynamic Visualization of Rolling Two Dice) Modify your simulation of rolling two dice from Exercise 5.32 to update the bar plot dynamically as you roll the dice. Use the techniques you learned in Section 6.4.2.
+6.16	(Intro to Data Science: Dynamic Visualization of the Dice Game of Craps) Reim-plement your solution to Exercise 5.33, using the techniques you learned in Section 6.4.2 to create a dynamic bar chart showing the wins and losses on the first roll, second roll, third roll, etc. 
+6.17	(Project: Cooking with Healthier Ingredients) In the “Strings: A Deeper Look” chapter’s exercises, you’ll write a script that enables its user to enter ingredients from a cooking recipe, then recommends healthier replacements.3 In preparation for that exer-cise, create a dictionary that maps ingredients to lists of potential replacements. Some in-gredient replacements are shown below:
+
+
+3.    Always consult a healthcare professional before making significant changes to your diet.
+
+
+
+
+
+
+238 Dictionaries and Sets
+
+
+
+
+Ingredient
+
+1 cup sour cream 1 cup milk
+1 teaspoon lemon juice 1 cup sugar
+1 cup butter 1 cup flour
+1 cup mayonnaise
+
+1 egg
+
+1 cup milk
+1 cup oil
+
+Substitution
+
+1 cup yogurt
+1/2 cup evaporated milk and 1/2 cup water 1/2 teaspoon vinegar
+1/2 cup honey, 1 cup molasses or 1/4 cup agave nectar 1 cup margarine or yogurt
+1 cup rye or rice flour
+1 cup cottage cheese
+or 1/8 cup mayonnaise and 7/8 cup yogurt
+2 tablespoons cornstarch, arrowroot flour or potato starch or 2 egg whites or 1/2 of a large banana (mashed)
+1 cup soy milk
+1 cup applesauce
+
+
+Your dictionary should take into consideration that replacements are not always one-for-one. For example, if a cake recipe calls for three eggs, it might reasonably use six egg whites instead. Research conversion data for measurements and ingredient substitutes online. Your dictionary should map the ingredients to lists of potential substitutes. 
+
+
+
+
+
+
+
+
+Array-Oriented Programming with NumPy
+
+
+
+Objectives In this chapter you’ll:
+■ Learn what arrays are and how they differ from lists.
+■ Use the numpy module’s high-performance ndarrays.
+■ Compare list and ndarray performance with the IPython %timeit magic.
+■ Use ndarrays to store and retrieve data efficiently.
+■ Create and initialize ndarrays.
+■ Refer to individual ndarray elements.
+■ Iterate through ndarrays.
+■ Create and manipulate multidimensional ndarrays.
+■ Perform common ndarray manipulations.
+■ Create and manipulate pandas one-dimensional Series and two-dimensional DataFrames.
+■ Customize Series and DataFrame indices.
+■ Calculate basic descriptive statistics for data in a Series and a DataFrame.
+■ Customize floating-point number precision in pandas output formatting.
+
+
+
+
+
+
+240 Array-Oriented Programming with NumPy
+a 
+a 
+
+
+
+7.1 Introduction 
+7.2 Creating arrays from Existing Data 7.3 rray Attributes 
+7.4 Filling arrays with Specific Values 7.5 Creating arrays from Ranges 
+7.6 List vs. array Performance: Introducing %timeit 
+7.7 rray Operators 
+7.8 NumPy Calculation Methods 
+7.9 Universal Functions 
+
+7.10 Indexing and Slicing 7.11 Views: Shallow Copies 7.12 Deep Copies 
+7.13 Reshaping and Transposing 
+7.14 Intro to Data Science: pandas Series and DataFrames 
+7.14.1 pandas Series 7.14.2 DataFrames
+7.15 Wrap-Up 
+Exercises
+
+
+7.1 Introduction
+The NumPy (Numerical Python) library first appeared in 2006 and is the preferred
+Python array implementation. It offers a high-performance, richly functional n-dimen-sional array type called ndarray, which from this point forward we’ll refer to by its syn-onym, array. NumPy is one of the many open-source libraries that the Anaconda Python distribution installs. Operations on arrays are up to two orders of magnitude faster than those on lists. In a big-data world in which applications may do massive amounts of pro-cessing on vast amounts of array-based data, this performance advantage can be critical. According to libraries.io, over 450 Python libraries depend on NumPy. Many popular data science libraries such as Pandas, SciPy (Scientific Python) and Keras (for deep learn-ing) are built on or depend on NumPy. 
+In this chapter, we explore array’s basic capabilities. Lists can have multiple dimen-sions. You generally process multi-dimensional lists with nested loops or list comprehen-sions with multiple for clauses. A strength of NumPy is “array-oriented programming,” which uses functional-style programming with internal iteration to make array manipula-tions concise and straightforward, eliminating the kinds of bugs that can occur with the external iteration of explicitly programmed loops. 
+In this chapter’s Intro to Data Science section, we begin our multi-section introduc-tion to the pandas library that you’ll use in many of the data science case study chapters. Big data applications often need more flexible collections than NumPy’s arrays—collec-tions that support mixed data types, custom indexing, missing data, data that’s not struc-tured consistently and data that needs to be manipulated into forms appropriate for the databases and data analysis packages you use. We’ll introduce pandas array-like one-dimensional Series and two-dimensional DataFrames and begin demonstrating their powerful capabilities. After reading this chapter, you’ll be familiar with four array-like col-lections—lists, arrays, Series and DataFrames. We’ll add a fifth—tensors—in the “Deep Learning” chapter.
+
+Self Check
+1	(Fill-In) The NumPy library provides the 	 data structure, which is typically much faster than lists.
+Answer: ndarray.
+
+
+
+
+
+7.2 Creating arrays from Existing Data	241
+
+
+7.2 Creating arrays from Existing Data 
+The NumPy documentation recommends importing the numpy module as np so that you can access its members with "np.":
+In [1]: import numpy as np
+The numpy module provides various functions for creating arrays. Here we use the array function, which receives as an argument an array or other collection of elements and returns a new array containing the argument’s elements. Let’s pass a list: 
+In [2]: numbers = np.array([2, 3, 5, 7, 11])
+The array function copies its argument’s contents into the array. Let’s look at the type of object that function array returns and display its contents:
+In [3]: type(numbers) Out[3]: numpy.ndarray
+
+In [4]: numbers
+Out[4]: array([ 2,  3,  5,  7, 11])
+Note that the type is numpy.ndarray, but all arrays are output as “array.” When output-ting an array, NumPy separates each value from the next with a comma and a space and right-aligns all the values using the same field width. It determines the field width based on the value that occupies the largest number of character positions. In this case, the value 11 occupies the two character positions, so all the values are formatted in two-character fields. That’s why there’s a leading space between the [ and 2. 
+
+Multidimensional Arguments
+The array function copies its argument’s dimensions. Let’s create an array from a two-row-by-three-column list:
+In [5]: np.array([[1, 2, 3], [4, 5, 6]]) Out[5]: 
+array([[1, 2, 3],
+  [4, 5, 6]])
+NumPy auto-formats arrays, based on their number of dimensions, aligning the columns within each row.
+
+Self Check
+1	(Fill-In) Function array creates an array from 	. Answer: an array or other collection of elements.
+2	(IPython Session) Create a one-dimensional array from a list comprehension that produces the even integers from 2 through 20. 
+Answer:
+In [1]: import numpy as np
+
+In [2]: np.array([x for x in range(2, 21, 2)])
+Out[2]: array([ 2,  4,  6,  8, 10, 12, 14, 16, 18, 20])
+3	(IPython Session) Create a 2-by-5 array containing the even integers from 2 through 10 in the first row and the odd integers from 1 through 9 in the second row. 
+
+
+
+
+
+
+242 Array-Oriented Programming with NumPy
+
+
+Answer:
+In [3]: np.array([[2, 4, 6, 8, 10], [1, 3, 5, 7, 9]]) Out[3]: 
+array([[ 2,  4,  6,  8, 10],
+  [ 1,  3,  5,  7,  9]])
+
+7.3 array Attributes 
+An array object provides attributes that enable you to discover information about its structure and contents. In this section we’ll use the following arrays:
+In [1]: import numpy as np
+
+In [2]: integers = np.array([[1, 2, 3], [4, 5, 6]])
+
+In [3]: integers Out[3]: array([[1, 2, 3],
+  [4, 5, 6]])
+
+In [4]: floats = np.array([0.0, 0.1, 0.2, 0.3, 0.4])
+
+In [5]: floats
+Out[5]: array([ 0. ,  0.1,  0.2,  0.3,  0.4])
+NumPy does not display trailing 0s to the right of the decimal point in floating-point values.
+
+Determining an array’s Element Type
+The array function determines an array’s element type from its argument’s elements. You can check the element type with an array’s dtype attribute:
+In [6]: integers.dtype
+Out[6]: dtype('int64')  # int32 on some platforms
+
+In [7]: floats.dtype Out[7]: dtype('float64')
+As you’ll see in the next section, various array-creation functions receive a dtype keyword argument so you can specify an array’s element type. 
+For performance reasons, NumPy is written in the C programming language and uses C’s data types. By default, NumPy stores integers as the NumPy type int64 values—which correspond to 64-bit (8-byte) integers in C—and stores floating-point numbers as the NumPy type float64 values—which correspond to 64-bit (8-byte) floating-point val-ues in C. In our examples, most commonly you’ll see the types int64, float64, bool (for Boolean) and object for non-numeric data (such as strings). The complete list of sup-ported types is at https://docs.scipy.org/doc/numpy/user/basics.types.html. 
+
+Determining an array’s Dimensions
+The attribute ndim contains an array’s number of dimensions and the attribute shape contains a tuple specifying an array’s dimensions: 
+In [8]: integers.ndim Out[8]: 2
+
+In [9]: floats.ndim Out[9]: 1
+
+
+
+
+
+7.3 array Attributes	243
+
+
+In [10]: integers.shape Out[10]: (2, 3)
+
+In [11]: floats.shape Out[11]: (5,)
+Here, integers has 2 rows and 3 columns (6 elements) and floats is one-dimensional, so snippet [11] shows a one-element tuple (indicated by the comma) containing floats’ number of elements (5).
+
+Determining an array’s Number of Elements and Element Size
+You can view an array’s total number of elements with the attribute size and the number of bytes required to store each element with itemsize: 
+In [12]: integers.size Out[12]: 6
+
+In [13]: integers.itemsize  # 4 if C compiler uses 32-bit ints Out[13]: 8
+
+In [14]: floats.size Out[14]: 5
+
+In [15]: floats.itemsize Out[15]: 8
+Note that integers’ size is the product of the shape tuple’s values—two rows of three elements each for a total of six elements. In each case, temsize is 8 because integers con-tains int64 values and floats contains float64 values, which each occupy 8 bytes.
+i 
+
+Iterating Through a Multidimensional array’s Elements
+You’ll generally manipulate arrays using concise functional-style programming tech-niques. However, because arrays are iterable, you can use external iteration if you’d like:
+In [16]: for row in integers:
+  ...:     for column in row:
+  ...:   	 print(column, end='  ')
+  ...:     print()
+  ...:   
+1  2  3  4  5  6  
+You can iterate through a multidimensional array as if it were one-dimensional by using its flat attribute:
+In [17]: for i in integers.flat:
+  ...:     print(i, end='  ')
+  ...:   
+1  2  3  4  5  6  
+
+Self Check
+1	(True/False) By default, NumPy displays trailing 0s to the right of the decimal point in a floating-point value.
+Answer: False. By default, NumPy does not display trailing 0s in the fractional part of a floating-point value
+
+
+
+
+
+
+244 Array-Oriented Programming with NumPy
+
+
+2	(IPython Session) For the two-dimensional array in the previous section’s Self Check, display the number of dimensions and shape of the array.
+Answer:
+In [1]: import numpy as np
+
+In [2]: a = np.array([[2, 4, 6, 8, 10], [1, 3, 5, 7, 9]])
+
+In [3]: a.ndim Out[3]: 2
+
+In [4]: a.shape Out[4]: (2, 5)
+
+7.4 Filling arrays with Specific Values 
+NumPy provides functions zeros, ones and full for creating arrays containing  0s, 1s or a specified value, respectively. By default, zeros and ones create arrays containing float64 values. We’ll show how to customize the element type momentarily. The first argument to these functions must be an integer or a tuple of integers specifying the desired dimensions. For an integer, each function returns a one-dimensional array with the spec-ified number of elements:
+In [1]: import numpy as np
+
+In [2]: np.zeros(5)
+Out[2]: array([ 0.,  0.,  0.,  0.,  0.])
+For a tuple of integers, these functions return a multidimensional rray with the spec-ified dimensions. You can specify the array’s element type with the zeros and ones func-tion’s dtype keyword argument:
+a 
+In [3]: np.ones((2, 4), dtype=int) Out[3]: 
+array([[1, 1, 1, 1],
+  [1, 1, 1, 1]])
+The rray returned by ull contains elements with the second argument’s value and type: 
+a	f 
+In [4]: np.full((3, 5), 13) Out[4]: 
+array([[13, 13, 13, 13, 13],
+  [13, 13, 13, 13, 13],
+  [13, 13, 13, 13, 13]])
+
+7.5 Creating arrays from Ranges 
+NumPy provides optimized functions for creating arrays from ranges. We focus on simple evenly spaced integer and floating-point ranges, but NumPy also supports nonlinear ranges.1
+
+Creating Integer Ranges with arange 
+Let’s use NumPy’s arange function to create integer ranges—similar to using built-in function range. In each case, arange first determines the resulting array’s number of ele-ments, allocates the memory, then stores the specified range of values in the array: 
+
+1.    https://docs.scipy.org/doc/numpy/reference/routines.array-creation.html.
+
+
+
+
+
+7.5 Creating arrays from Ranges	245
+
+
+In [1]: import numpy as np
+
+In [2]: np.arange(5)
+Out[2]: array([0, 1, 2, 3, 4])
+
+In [3]: np.arange(5, 10) Out[3]: array([5, 6, 7, 8, 9])
+
+In [4]: np.arange(10, 1, -2) Out[4]: array([10,  8,  6,  4,  2])
+Though you can create arrays by passing ranges as arguments, always use arange as it’s optimized for arrays. Soon we’ll show how to determine the execution time of various operations so you can compare their performance.
+
+Creating Floating-Point Ranges with linspace 
+You can produce evenly spaced floating-point ranges with NumPy’s linspace function. The function’s first two arguments specify the starting and ending values in the range, and the ending value is included in the array. The optional keyword argument num specifies the number of evenly spaced values to produce—this argument’s default value is 50:
+In [5]: np.linspace(0.0, 1.0, num=5)
+Out[5]: array([ 0.  ,  0.25,  0.5 ,  0.75,  1.  ])
+
+Reshaping an array 
+You also can create an array from a range of elements, then use array method reshape to transform the one-dimensional array into a multidimensional array. Let’s create an array containing the values from 1 through 20, then reshape it into four rows by five col-umns:
+In [6]: np.arange(1, 21).reshape(4, 5) Out[6]: 
+array([[ 1,  2,  3,  4,  5],
+  [ 6,  7,  8,  9, 10],
+  [11, 12, 13, 14, 15],
+  [16, 17, 18, 19, 20]])
+Note the chained method calls in the preceding snippet. First, arange produces an array containing the values 1–20. Then we call reshape on that array to get the 4-by-5 array that was displayed. 
+You can reshape any array, provided that the new shape has the same number of ele-ments as the original. So a six-element one-dimensional array can become a 3-by-2 or 2-by-3 array, and vice versa, but attempting to reshape a 15-element array into a 4-by-4 array (16 elements) causes a ValueError. 
+
+Displaying Large arrays 
+When displaying an array, if there are 1000 items or more, NumPy drops the middle rows, columns or both from the output. The following snippets generate 100,000 ele-ments. The first case shows all four rows but only the first and last three of the 25,000 col-umns. The notation ... represents the missing data. The second case shows the first and last three of the 100 rows, and the first and last three of the 1000 columns:
+
+
+
+
+
+
+246 Array-Oriented Programming with NumPy
+
+
+In [7]: np.arange(1, 100001).reshape(4, 25000) Out[7]: 
+array([[     1,   2,    3, ...,  24998,  24999,  25000],
+  [ 25001,  25002,  25003, ...,  49998,  49999,  50000],
+  [ 50001,  50002,  50003, ...,  74998,  74999,  75000],
+  [ 75001,  75002,  75003, ...,  99998,  99999, 100000]])
+
+In [8]: np.arange(1, 100001).reshape(100, 1000) Out[8]: 
+array([[     1,   2,    3, ...,    998,    999,   1000],
+  [  1001,   1002,   1003, ...,   1998,   1999,   2000],
+  [  2001,   2002,   2003, ...,   2998,   2999,   3000],
+  ...,
+  [ 97001,  97002,  97003, ...,  97998,  97999,  98000],
+  [ 98001,  98002,  98003, ...,  98998,  98999,  99000],
+  [ 99001,  99002,  99003, ...,  99998,  99999, 100000]])
+
+Self Check
+1	(Fill-In) NumPy function 	 returns an ndarray containing evenly spaced floating-point values. 
+Answer: linspace.
+2	(IPython Session) Use NumPy function arange to create an array of 20 even integers from 2 through 40, then reshape the result into a 4-by-5 array.
+Answer:
+In [1]: import numpy as np
+
+In [2]: np.arange(2, 41, 2).reshape(4, 5) Out[2]: 
+array([[ 2,  4,  6,  8, 10],
+  [12, 14, 16, 18, 20],
+  [22, 24, 26, 28, 30],
+  [32, 34, 36, 38, 40]])
+
+7.6 List vs. array Performance: Introducing %timeit 
+Most array operations execute significantly faster than corresponding list operations. To demonstrate, we’ll use the IPython %timeit magic command, which times the average duration of operations. Note that the times displayed on your system may vary from what we show here.
+
+Timing the Creation of a List Containing Results of 6,000,000 Die Rolls 
+We’ve demonstrated rolling a six-sided die 6,000,000 times. Here, let’s use the random module’s randrange function with a list comprehension to create a list of six million die rolls and time the operation using %timeit. Note that we used the line-continuation char-acter (\) to split the statement in snippet [2] over two lines:
+In [1]: import random
+
+In [2]: %timeit rolls_list = \
+ ...:    [random.randrange(1, 7) for i in range(0, 6_000_000)] 6.29 s ± 119 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+
+
+
+
+7.6 List vs. array Performance: Introducing %timeit 247
+
+
+By default, %timeit executes a statement in a loop, and it runs the loop seven times. If you do not indicate the number of loops, %timeit chooses an appropriate value. In our testing, operations that on average took more than 500 milliseconds iterated only once, and operations that took fewer than 500 milliseconds iterated 10 times or more. 
+After executing the statement, %timeit displays the statement’s average execution time, as well as the standard deviation of all the executions. On average, %timeit indicates that it took 6.29 seconds (s) to create the list with a standard deviation of 119 milliseconds (ms). In total, the preceding snippet took about 44 seconds to run the snippet seven times. 
+
+Timing the Creation of an array Containing Results of 6,000,000 Die Rolls  Now, let’s use the randint function from the numpy.random module to create an array of 6,000,000 die rolls 
+In [3]: import numpy as np
+
+In [4]: %timeit rolls_array = np.random.randint(1, 7, 6_000_000)
+72.4 ms ± 635 μs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+On average, %timeit indicates that it took only 72.4 milliseconds with a standard deviation of 635 microseconds (μs) to create the array. In total, the preceding snippet took just under half a second to execute on our computer—about 1/100th of the time snippet [2] took to execute. The operation is two orders of magnitude faster with array!
+
+60,000,000 and 600,000,000 Die Rolls  Now, let’s create an array of 60,000,000 die rolls:
+In [5]: %timeit rolls_array = np.random.randint(1, 7, 60_000_000) 873 ms ± 29.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+On average, it took only 873 milliseconds to create the array. Finally, let’s do 600,000,000 million die rolls:
+In [6]: %timeit rolls_array = np.random.randint(1, 7, 600_000_000) 10.1 s ± 232 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+It took about 10 seconds to create 600,000,000 elements with NumPy vs. about 6 seconds to create only 6,000,000 elements with a list comprehension. 
+Based on these timing studies, you can see clearly why arrays are preferred over lists for compute-intensive operations. In the data science case studies, we’ll enter the perfor-mance-intensive worlds of big data and AI. We’ll see how clever hardware, software, com-munications and algorithm designs combine to meet the often enormous computing challenges of today’s applications.
+
+Customizing the %timeit Iterations  
+The number of iterations within each %timeit loop and the number of loops are custom-izable with the -n and -r options. The following executes snippet [4]’s statement three times per loop and runs the loop twice:2
+In [7]: %timeit -n3 -r2 rolls_array = np.random.randint(1, 7, 6_000_000) 85.5 ms ± 5.32 ms per loop (mean ± std. dev. of 2 runs, 3 loops each)
+
+
+2.    For most readers, using %timeit’s default settings should be fine.
+
+
+
+
+
+
+248 Array-Oriented Programming with NumPy
+
+
+Other IPython Magics
+IPython provides dozens of magics for a variety of tasks—for a complete list, see the IPy-thon magics documentation.3 Here are a few helpful ones:
+•	%load to read code into IPython from a local file or URL.
+•	%save to save snippets to a file.
+•	%run to execute a .py file from IPython.
+•	%precision to change the default floating-point precision for IPython outputs.
+•	%cd to change directories without having to exit IPython first.
+•	%edit to launch an external editor—handy if you need to modify more complex snippets.
+•	%history to view a list of all snippets and commands you’ve executed in the cur-rent IPython session.
+
+Self Check
+1	(IPython Session) Use %timeit to compare the execution time of the following two statements. The first uses a list comprehension to create a list of the integers from 0 to 9,999,999, then totals them with the built-in sum function. The second statement does the same thing using an array and its sum method.
+sum([x for x in range(10_000_000)]) np.arange(10_000_000).sum()
+Answer:
+In [1]: import numpy as np
+
+In [2]: %timeit sum([x for x in range(10_000_000)])
+708 ms ± 28.2 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+
+In [3]: %timeit np.arange(10_000_000).sum()
+27.2 ms ± 676 μs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+The statement with the list comprehension took 26 times longer to execute than the one with the arra . 
+y 
+
+7.7 array Operators
+NumPy provides many operators which enable you to write simple expressions that per-form operations on entire arrays. Here, we demonstrate arithmetic between arrays and numeric values and between arrays of the same shape.
+
+Arithmetic Operations with arrays and Individual Numeric Values
+First, let’s perform element-wise arithmetic with arrays and numeric values by using arith-metic operators and augmented assignments. Element-wise operations are applied to every element, so snippet 4] multiplies every element by  and snippet 5] cubes every element. Each returns a new array containing the result: 
+[	2	[ 
+
+3.    http://ipython.readthedocs.io/en/stable/interactive/magics.html.
+
+
+
+
+
+7.7 array Operators	249
+
+
+In [1]: import numpy as np
+
+In [2]: numbers = np.arange(1, 6)
+
+In [3]: numbers
+Out[3]: array([1, 2, 3, 4, 5])
+
+In [4]: numbers * 2
+Out[4]: array([ 2,  4,  6,  8, 10]) 
+
+In [5]: numbers ** 3
+Out[5]: array([  1,   8,  27,  64, 125])
+
+In [6]: numbers  # numbers is unchanged by the arithmetic operators Out[6]: array([1, 2, 3, 4, 5])
+Snippet 6] shows that the arithmetic operators did not modify numbers. Operators + and * are commutative, so snippet [4] could also be written as 2 * numbers. 
+[ 
+Augmented assignments modify every element in the left operand. 
+In [7]: numbers += 10
+
+In [8]: numbers
+Out[8]: array([11, 12, 13, 14, 15])
+
+Broadcasting 
+Normally, the arithmetic operations require as operands two arrays of the same size and shape. When one operand is a single value, called a scalar, NumPy performs the element-wise calculations as if the scalar were an array of the same shape as the other operand, but with the scalar value in all its elements. This is called broadcasting. Snippets [4], [5] and [7]each use this capability. For example, snippet [4] is equivalent to:
+numbers * [2, 2, 2, 2, 2]
+
+Broadcasting also can be applied between arrays of different sizes and shapes, enabling some concise and powerful manipulations. We’ll show more examples of broad-casting later in the chapter when we introduce NumPy’s universal functions.
+
+Arithmetic Operations Between arrays 
+You may perform arithmetic operations and augmented assignments between arrays of the same shape. Let’s multiply the one-dimensional rrays umbers and numbers2 (created below) that each contain five elements: 
+a	n 
+In [9]: numbers2 = np.linspace(1.1, 5.5, 5)
+
+In [10]: numbers2
+Out[10]: array([ 1.1,  2.2,  3.3,  4.4,  5.5])
+
+In [11]: numbers * numbers2
+Out[11]: array([ 12.1,  26.4,  42.9,  61.6,  82.5])
+The result is a new array formed by multiplying the rrays element-wise in each operand—11 * 1.1, 12 * 2.2, 13 * 3.3, etc. Arithmetic between arrays of integers and floating-point numbers results in an array of floating-point numbers. 
+a 
+
+
+
+
+
+
+250 Array-Oriented Programming with NumPy
+
+
+Comparing arrays
+You can compare arrays with individual values and with other arrays. Comparisons are performed element-wise. Such comparisons produce arrays of Boolean values in which each element’s True or False value indicates the comparison result:
+In [12]: numbers
+Out[12]: array([11, 12, 13, 14, 15])
+
+In [13]: numbers >= 13
+Out[13]: array([False, False,  True,  True,  True])
+
+In [14]: numbers2
+Out[14]: array([ 1.1,  2.2,  3.3,  4.4,  5.5])
+
+In [15]: numbers2 < numbers
+Out[15]: array([ True,  True,  True,  True,  True])
+
+In [16]: numbers == numbers2
+Out[16]: array([False, False, False, False, False])
+
+In [17]: numbers == numbers
+Out[17]: array([ True,  True,  True,  True,  True])
+Snippet [13] uses broadcasting to determine whether each element of numbers is greater than or equal to 13. The remaining snippets compare the corresponding elements of each array operand. 
+
+Self Check
+1	(True/False) When one of the operands of an array operator is a scalar, NumPy uses broadcasting to perform the calculation as if the scalar were an array of the same shape as the other operand, but containing the scalar value in all its elements.
+Answer: True.
+2	(IPython Session) Create an array of the values from 1 through 5, then use broadcast-ing to square each value.
+Answer:
+In [1]: import numpy as np
+
+In [2]: np.arange(1, 6) ** 2 Out[2]: array([ 1,  4,  9, 16, 25])
+
+
+7.8 NumPy Calculation Methods
+An array has various methods that perform calculations using its contents. By default, these methods ignore the array’s shape and use all the elements in the calculations. For example, calculating the mean of an array totals all of its elements regardless of its shape, then divides by the total number of elements. You can perform these calculations on each dimension as well. For example, in a two-dimensional array, you can calculate each row’s mean and each column’s mean. 
+
+
+
+
+
+
+7.8 NumPy Calculation Methods	251
+
+
+Consider an array representing four students’ grades on three exams: In [1]: import numpy as np
+
+In [2]: grades = np.array([[87, 96, 70], [100, 87, 90],
+ ...: 	  [94, 77, 90], [100, 81, 82]])
+ ...: 
+
+In [3]: grades Out[3]: 
+array([[ 87,  96,  70],
+  [100,  87,  90],
+  [ 94,  77,  90],
+  [100,  81,  82]])
+We can use methods to calculate sum, min, max, mean, std (standard deviation) and var (variance)—each is a functional-style programming reduction:
+In [4]: grades.sum() Out[4]: 1054
+
+In [5]: grades.min() Out[5]: 70
+
+In [6]: grades.max() Out[6]: 100
+
+In [7]: grades.mean() Out[7]: 87.83333333333333
+
+In [8]: grades.std() Out[8]: 8.792357792739987
+
+In [9]: grades.var() Out[9]: 77.30555555555556
+
+Calculations by Row or Column
+Many calculation methods can be performed on specific array dimensions, known as the array’s axes. These methods receive an axis keyword argument that specifies which dimension to use in the calculation, giving you a quick way to perform calculations by row or column in a two-dimensional array. 
+Assume that you want to calculate the average grade on each exam, represented by the columns of grades. Specifying axis=0 performs the calculation on all the row values within each column:
+In [10]: grades.mean(axis=0)
+Out[10]: array([95.25, 85.25, 83.  ])
+So 95.25 above is the average of the first column’s grades (87, 100, 94 and 100), 85.25 is the average of the second column’s grades (96, 87, 77 and 81) and 83 is the average of the third column’s grades (70, 90, 90 and 82). Again, NumPy does not display trailing 0s to the right of the decimal point in '83.'. Also note that it does display all element values in the same field width, which is why '83.' is followed by two spaces.
+Similarly, specifying axis=1 performs the calculation on all the column values within each individual row. To calculate each student’s average grade for all exams, we can use:
+
+
+
+
+
+
+252 Array-Oriented Programming with NumPy
+
+
+In [11]: grades.mean(axis=1)
+Out[11]: array([84.33333333, 92.33333333, 87.     , 87.66666667])
+This produces four averages—one each for the values in each row. So 84.33333333 is the average of row 0’s grades (87, 96 and 70), and the other averages are for the remaining rows. NumPy arrays have many more calculation methods. For the complete list, see 
+https://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html
+
+Self Check
+1	(Fill-In) NumPy functions 	 and 	 calculate variance and standard deviation, respectively.
+Answer: var, std.
+2	(IPython Session) Use NumPy random-number generation to create an array of twelve random grades in the range 60 through 100, then reshape the result into a 3-by-4 array. Calculate the average of all the grades, the averages of the grades in each column and the averages of the grades in each row. 
+Answer:
+In [1]: import numpy as np
+
+In [2]: grades = np.random.randint(60, 101, 12).reshape(3, 4)
+
+In [3]: grades Out[3]: 
+array([[94, 72, 76, 91],
+  [65, 78, 66, 70],
+  [65, 60, 63, 72]])
+
+In [4]: grades.mean() Out[4]: 72.66666666666667
+
+In [5]: grades.mean(axis=0)
+Out[5]: array([74.66666667, 70.     , 68.33333333, 77.66666667])
+
+In [6]: grades.mean(axis=1)
+Out[6]: array([83.25, 69.75, 65.  ])
+
+7.9 Universal Functions
+NumPy offers dozens of standalone universal functions (or ufuncs) that perform various element-wise operations. Each performs its task using one or two array or array-like (such as lists) arguments. Some of these functions are called when you use operators like + and *on arrays. Each returns a new array containing the results.
+Let’s create an array and calculate the square root of its values, using the sqrt uni-versal function:
+In [1]: import numpy as np
+
+In [2]: numbers = np.array([1, 4, 9, 16, 25, 36])
+
+In [3]: np.sqrt(numbers)
+Out[3]: array([1., 2., 3., 4., 5., 6.])
+
+
+
+
+
+
+7.9 Universal Functions	253
+
+
+Let’s add two arrays with the same shape, using the add universal function: In [4]: numbers2 = np.arange(1, 7) * 10
+
+In [5]: numbers2
+Out[5]: array([10, 20, 30, 40, 50, 60])
+
+In [6]: np.add(numbers, numbers2) Out[6]: array([11, 24, 39, 56, 75, 96])
+The expression np.add(numbers, numbers2) is equivalent to: numbers + numbers2
+
+Broadcasting with Universal Functions
+Let’s use the multiply universal function to multiply every element of numbers2 by the scalar value 5:
+In [7]: np.multiply(numbers2, 5)
+Out[7]: array([ 50, 100, 150, 200, 250, 300])
+The expression np.multiply(numbers2, 5) is equivalent to: numbers2 * 5
+Let’s reshape numbers2 into a 2-by-3 array, then multiply its values by a one-dimen-sional array of three elements:
+In [8]: numbers3 = numbers2.reshape(2, 3)
+
+In [9]: numbers3 Out[9]: 
+array([[10, 20, 30],
+  [40, 50, 60]])
+
+In [10]: numbers4 = np.array([2, 4, 6])
+
+In [11]: np.multiply(numbers3, numbers4) Out[11]: 
+array([[ 20,  80, 180],
+  [ 80, 200, 360]])
+This works because numbers4 has the same length as each row of numbers3, so NumPy can apply the multiply operation by treating numbers4 as if it were the following array:
+array([[2, 4, 6],
+  [2, 4, 6]])
+
+If a universal function receives two arrays of different shapes that do not support broadcasting, a ValueError occurs. You can view the broadcasting rules at:
+https://docs.scipy.org/doc/numpy/user/basics.broadcasting.html
+
+Other Universal Functions
+The NumPy documentation lists universal functions in five categories—math, trigonom-etry, bit manipulation, comparison and floating point. The following table lists some functions from each category. You can view the complete list, their descriptions and more information about universal functions at:
+https://docs.scipy.org/doc/numpy/reference/ufuncs.html
+
+
+
+
+
+
+254 Array-Oriented Programming with NumPy
+
+
+
+NumPy universal functions
+,	, 
+, 
+, 
+r 
+
+Math—add, subtract, multiply divide, remainder exp, log, sqrt, power, and more. Trigonometry—sin, cos, tan, hypot, arcsin, arccos, arctan, and more.
+Bit manipulation—bitwise_and, bitwise_or bitwise_xor, invert, left_shift and right_shift.
+Comparison—greater, greater_equal, less, less_equal, equal, not_equal, logical_and, logical_or logical_xor, logical_not, minimum, maximum, and more.
+Floating point—floo , ceil, isinf, isnan, fabs, trunc, and more.
+
+
+Self Check
+1	(Fill-In) NumPy offers dozens of standalone functions, which it calls 	. Answer: universal functions (or ufuncs).
+2	(IPython Session) Create an array of the values from 1 through 5, then use the power universal function and broadcasting to cube each value.
+Answer:
+In [1]: import numpy as np
+
+In [2]: numbers = np.arange(1, 6)
+
+In [3]: np.power(numbers, 3)
+Out[3]: array([  1,   8,  27,  64, 125])
+
+
+7.10 Indexing and Slicing 
+One-dimensional arrays can be indexed and sliced using the same syntax and techniques we demonstrated in the “Sequences: Lists and Tuples” chapter. Here, we focus on array-specific indexing and slicing capabilities. 
+
+Indexing with Two-Dimensional arrays
+To select an element in a two-dimensional array, specify a tuple containing the element’s row and column indices in square brackets (as in snippet [4]):
+In [1]: import numpy as np
+
+In [2]: grades = np.array([[87, 96, 70], [100, 87, 90],
+ ...: 	  [94, 77, 90], [100, 81, 82]])
+ ...: 
+
+In [3]: grades Out[3]: 
+array([[ 87,  96,  70],
+  [100,  87,  90],
+  [ 94,  77,  90],
+  [100,  81,  82]])
+
+In [4]: grades[0, 1]  # row 0, column 1 Out[4]: 96
+
+
+
+
+
+
+7.10 Indexing and Slicing	255
+
+
+Selecting a Subset of a Two-Dimensional array’s Rows To select a single row, specify only one index in square brackets:
+In [5]: grades[1]
+Out[5]: array([100,  87,  90])
+To select multiple sequential rows, use slice notation:
+In [6]: grades[0:2] Out[6]: 
+array([[ 87,  96,  70],
+  [100,  87,  90]])
+To select multiple non-sequential rows, use a list of row indices:
+In [7]: grades[[1, 3]] Out[7]: 
+array([[100,  87,  90],
+  [100,  81,  82]])
+
+Selecting a Subset of a Two-Dimensional array’s Columns
+You can select subsets of the columns by providing a tuple specifying the row(s) and col-umn(s) to select. Each can be a specific index, a slice or a list. Let’s select only the elements in the first column: 
+In [8]: grades[:, 0]
+Out[8]: array([ 87, 100,  94, 100])
+The 0 after the comma indicates that we’re selecting only column 0. The : before the comma indicates which rows within that column to select. In this case, : is a slice repre-senting all rows. This also could be a specific row number, a slice representing a subset of the rows or a list of specific row indices to select, as in snippets [5]–[7].
+You can select consecutive columns using a slice:
+In [9]: grades[:, 1:3] Out[9]: 
+array([[96, 70],
+  [87, 90],
+  [77, 90],
+  [81, 82]])
+or specific columns using a list of column indices:
+In [10]: grades[:, [0, 2]] Out[10]: 
+array([[ 87,  70],
+  [100,  90],
+  [ 94,  90],
+  [100,  82]])
+
+Self Check
+1	(IPython Session) Given the following array: 
+array([[ 1,  2,  3,  4,  5],
+  [ 6,  7,  8,  9, 10],
+  [11, 12, 13, 14, 15]])
+
+write statements to perform the following tasks:
+
+
+
+
+
+
+256 Array-Oriented Programming with NumPy
+
+
+a) Select the second row.
+b) Select the first and third rows.
+c) Select the middle three columns. Answer:
+In [1]: import numpy as np
+
+In [2]: a = np.arange(1, 16).reshape(3, 5)
+
+In [3]: a Out[3]: 
+array([[ 1,  2,  3,  4,  5],
+  [ 6,  7,  8,  9, 10],
+  [11, 12, 13, 14, 15]])
+
+In [4]: a[1]
+Out[4]: array([ 6,  7,  8,  9, 10])
+
+In [5]: a[[0, 2]] Out[5]: 
+array([[ 1,  2,  3,  4,  5],
+  [11, 12, 13, 14, 15]])
+
+In [6]: a[:, 1:4] Out[6]: 
+array([[ 2,  3,  4],
+  [ 7,  8,  9],
+  [12, 13, 14]])
+
+
+7.11 Views: Shallow Copies
+The previous chapter introduced view objects—that is, objects that “see” the data in other objects, rather than having their own copies of the data. Views are also known as shallow copies. Various array methods and slicing operations produce views of an array’s data. 
+The array method view returns a new array object with a view of the original array object’s data. First, let’s create an array and a view of that array:
+In [1]: import numpy as np
+
+In [2]: numbers = np.arange(1, 6)
+
+In [3]: numbers
+Out[3]: array([1, 2, 3, 4, 5])
+
+In [4]: numbers2 = numbers.view()
+
+In [5]: numbers2
+Out[5]: array([1, 2, 3, 4, 5])
+We can use the built-in id function to see that numbers and umbers2 are different objects:
+n 
+In [6]: id(numbers) Out[6]: 4462958592
+
+In [7]: id(numbers2) Out[7]: 4590846240
+
+
+
+
+
+
+7.11 Views: Shallow Copies	257
+
+
+To prove that numbers2 views the same data as numbers, let’s modify an element in numbers, then display both arrays:
+In [8]: numbers[1] *= 10
+
+In [9]: numbers2
+Out[9]: array([ 1, 20,  3,  4,  5])
+
+In [10]: numbers
+Out[10]: array([ 1, 20,  3,  4,  5])
+Similarly, changing a value in the view also changes that value in the original array: In [11]: numbers2[1] /= 10
+
+In [12]: numbers
+Out[12]: array([1, 2, 3, 4, 5])
+
+In [13]: numbers2
+Out[13]: array([1, 2, 3, 4, 5])
+
+Slice Views
+Slices also create views. Let’s make numbers2 a slice that views only the first three elements of numbers:
+In [14]: numbers2 = numbers[0:3]
+
+In [15]: numbers2 Out[15]: array([1, 2, 3])
+Again, we can confirm that numbers and numbers2 are different objects with id: 
+In [16]: id(numbers) Out[16]: 4462958592
+
+In [17]: id(numbers2) Out[17]: 4590848000
+We can confirm that numbers2 is a view of only the first three numbers elements by attempting to access numbers2[3], which produces an IndexError:
+In [18]: numbers2[3]
+-------------------------------------------------------------------------
+IndexError 	 Traceback (most recent call last) <ipython-input-16-582053f52daa> in <module>()
+----> 1 numbers2[3]
+
+IndexError: index 3 is out of bounds for axis 0 with size 3
+Now, let’s modify an element both arrays share, then display them. Again, we see that numbers2 is a view of numbers:
+In [19]: numbers[1] *= 20
+
+In [20]: numbers
+Out[20]: array([1, 2, 3, 4, 5])
+
+In [21]: numbers2
+Out[21]: array([ 1, 40,  3])
+
+
+
+
+
+
+258 Array-Oriented Programming with NumPy
+
+
+Self Check
+1	(Fill-In) A view is also known as a(n) 	. Answer: shallow copy.
+
+
+7.12 Deep Copies
+Though views are separate array objects, they save memory by sharing element data from other arrays. However, when sharing mutable values, sometimes it’s necessary to create a deep copy with independent copies of the original data. This is especially important in multi-core programming, where separate parts of your program could attempt to modify your data at the same time, possibly corrupting it. 
+The array method copy returns a new array object with a deep copy of the original array object’s data. First, let’s create an array and a deep copy of that array:
+In [1]: import numpy as np
+
+In [2]: numbers = np.arange(1, 6)
+
+In [3]: numbers
+Out[3]: array([1, 2, 3, 4, 5])
+
+In [4]: numbers2 = numbers.copy()
+
+In [5]: numbers2
+Out[5]: array([1, 2, 3, 4, 5])
+To prove that numbers2 has a separate copy of the data in numbers, let’s modify an element in numbers, then display both arrays: 
+In [6]: numbers[1] *= 10
+
+In [7]: numbers
+Out[7]: array([ 1, 20,  3,  4,  5])
+
+In [8]: numbers2
+Out[8]: array([ 1, 2,  3,  4,  5])
+As you can see, the change appears only in numbers.
+
+Module copy—Shallow vs. Deep Copies for Other Types of Python Objects In previous chapters, we covered shallow copying. In this chapter, we’ve covered how to deep copy array objects using their copy method. If you need deep copies of other types of Python objects, pass them to the copy module’s deepcopy function. 
+
+Self Check
+1	(True/False) The array method copy returns a new array that is a view (shallow copy) of the original array. 
+Answer: False. The array method copy produces a deep copy of the original array.
+2	(True/False) Module copy provides function deep_copy, which returns a deep copy of its argument.
+Answer: False. The name of the function is deepcopy.
+
+
+
+
+
+
+7.13 Reshaping and Transposing	259
+
+
+7.13 Reshaping and Transposing 
+We’ve used array method reshape to produce two-dimensional arrays from one-dimen-sional ranges. NumPy provides various other ways to reshape arrays.
+
+reshape vs. resize 
+The array methods reshape and resize both enable you to change an array’s dimensions. Method reshape returns a view (shallow copy) of the original array with the new dimen-sions. It does not modify the original array:
+In [1]: import numpy as np
+
+In [2]: grades = np.array([[87, 96, 70], [100, 87, 90]])
+
+In [3]: grades Out[3]: 
+array([[ 87,  96,  70],
+  [100,  87,  90]])
+
+In [4]: grades.reshape(1, 6)
+Out[4]: array([[ 87,  96,  70, 100,  87,  90]])
+
+In [5]: grades Out[5]: 
+array([[ 87,  96,  70],
+  [100,  87,  90]])
+Method resize modifies the original arra ’s shape: In [6]: grades.resize(1, 6)
+y 
+
+In [7]: grades
+Out[7]: array([[ 87,  96,  70, 100,  87,  90]])
+
+flatten vs. ravel 
+You can take a multidimensional array and flatten it into a single dimension with the methods flatten and ravel. Method flatten deep copies the original array’s data:
+In [8]: grades = np.array([[87, 96, 70], [100, 87, 90]])
+
+In [9]: grades Out[9]: 
+array([[ 87,  96,  70],
+  [100,  87,  90]])
+
+In [10]: flattened = grades.flatten()
+
+In [11]: flattened
+Out[11]: array([ 87,  96,  70, 100,  87,  90])
+
+In [12]: grades Out[12]: 
+array([[ 87,  96,  70],
+  [100,  87,  90]])
+To confirm that grades and flattened do not share the data, let’s modify an element of flattened, then display both arrays:
+
+
+
+
+
+
+260 Array-Oriented Programming with NumPy
+
+
+In [13]: flattened[0] = 100
+
+In [14]: flattened
+Out[14]: array([100,  96,  70, 100,  87,  90])
+
+In [15]: grades Out[15]: 
+array([[ 87,  96,  70],
+  [100,  87,  90]])
+Method ravel produces a view of the original array, which shares the grades array’s data: 
+In [16]: raveled = grades.ravel()
+
+In [17]: raveled
+Out[17]: array([ 87,  96,  70, 100,  87,  90])
+
+In [18]: grades Out[18]: 
+array([[ 87,  96,  70],
+  [100,  87,  90]])
+To confirm that grades and raveled share the same data, let’s modify an element of rav-eled, then display both arrays:
+In [19]: raveled[0] = 100
+
+In [20]: raveled
+Out[20]: array([100,  96,  70, 100,  87,  90])
+
+In [21]: grades Out[21]: 
+array([[100,  96,  70],
+  [100,  87,  90]])
+
+Transposing Rows and Columns
+You can quickly transpose an array’s rows and columns—that is “flip” the array, so the rows become the columns and the columns become the rows. The T attribute returns a transposed view (shallow copy) of the array. The original grades array represents two students’ grades (the rows) on three exams (the columns). Let’s transpose the rows and col-umns to view the data as the grades on three exams (the rows) for two students (the col-umns):
+In [22]: grades.T Out[22]: array([[100, 100],
+  [ 96,  87],
+  [ 70,  90]])
+Transposing does not modify the original array:
+In [23]: grades Out[23]: 
+array([[100,  96,  70],
+  [100,  87,  90]])
+
+
+
+
+
+
+7.13 Reshaping and Transposing	261
+
+
+Horizontal and Vertical Stacking
+You can combine arrays by adding more columns or more rows—known as horizontal stacking and vertical stacking. Let’s create another 2-by-3 array of grades:
+In [24]: grades2 = np.array([[94, 77, 90], [100, 81, 82]])
+Let’s assume grades2 represents three additional exam grades for the two students in the grades array. We can combine grades and grades2 with NumPy’s hstack (horizon-tal stack) function by passing a tuple containing the arrays to combine. The extra paren-theses are required because hstack expects one argument:
+In [25]: np.hstack((grades, grades2)) Out[25]: 
+array([[100,  96,  70,  94,  77,  90],
+  [100,  87,  90, 100,  81,  82]])
+Next, let’s assume that grades2 represents two more students’ grades on three exams. In this case, we can combine grades and grades2 with NumPy’s vstack (vertical stack) function: 
+In [26]: np.vstack((grades, grades2)) Out[26]: 
+array([[100,  96,  70],
+  [100,  87,  90],
+  [ 94,  77,  90],
+  [100,  81,  82]])
+
+Self Check
+1	(IPython Session) Given a 2-by-3 array:
+array([[1, 2, 3],
+  [4, 5, 6]])
+
+use hstack and vstack to produce the following array:
+array([[1, 2, 3, 1, 2, 3],
+  [4, 5, 6, 4, 5, 6],
+  [1, 2, 3, 1, 2, 3],
+  [4, 5, 6, 4, 5, 6]])
+Answer:
+In [1]: import numpy as np
+
+In [2]: a = np.arange(1, 7).reshape(2, 3)
+
+In [3]: a = np.hstack((a, a))
+
+In [4]: a = np.vstack((a, a))
+
+In [5]: a Out[5]: 
+array([[1, 2, 3, 1, 2, 3],
+  [4, 5, 6, 4, 5, 6],
+  [1, 2, 3, 1, 2, 3],
+  [4, 5, 6, 4, 5, 6]])
+
+
+
+
+
+
+262 Array-Oriented Programming with NumPy
+
+
+7.14 Intro to Data Science: pandas Series and DataFrames
+NumPy’s array is optimized for homogeneous numeric data that’s accessed via integer indices. Data science presents unique demands for which more customized data structures are required. Big data applications must support mixed data types, customized indexing, missing data, data that’s not structured consistently and data that needs to be manipulated into forms appropriate for the databases and data analysis packages you use.
+Pandas is the most popular library for dealing with such data. It provides two key col-lections that you’ll use in several of our Intro to Data Science sections and throughout the data science case studies—Series for one-dimensional collections and DataFrames for two-dimensional collections. You can use pandas’ MultiIndex to manipulate multi-dimensional data in the context of Series and DataFrames.
+Wes McKinney created pandas in 2008 while working in industry. The name pandas is derived from the term “panel data,” which is data for measurements over time, such as stock prices or historical temperature readings. McKinney needed a library in which the same data structures could handle both time- and non-time-based data with support for data alignment, missing data, common database-style data manipulations, and more.4 
+NumPy and pandas are intimately related. Series and DataFrames use arrays “under the hood.” Series and DataFrames are valid arguments to many NumPy operations. Sim-ilarly, arrays are valid arguments to many Series and DataFrame operations. 
+Pandas is a massive topic—the PDF of its documentation5 is over 2000 pages. In this and the next chapters’ Intro to Data Science sections, we present an introduction to pan-das. We discuss its Series and DataFrames collections, and use them in support of data preparation. You’ll see that Series and DataFrames make it easy for you to perform com-mon tasks like selecting elements a variety of ways, filter/map/reduce operations (central to functional-style programming and big data), mathematical operations, visualization and more.
+
+7.14.1 pandas Series 
+A Series is an enhanced one-dimensional array. Whereas arrays use only zero-based integer indices, Series support custom indexing, including even non-integer indices like strings. Series also offer additional capabilities that make them more convenient for many data-science oriented tasks. For example, Series may have missing data, and many Series operations ignore missing data by default.
+
+Creating a Series with Default Indices
+By default, a Series has integer indices numbered sequentially from 0. The following cre-ates a Series of student grades from a list of integers:
+In [1]: import pandas as pd
+
+In [2]: grades = pd.Series([87, 100, 94])
+
+
+4.    McKinney, Wes. Python for Data Analysis: Data Wrangling with Pandas, NumPy, and IPython, pp. 123–165. Sebastopol, CA: OReilly Media, 2018.
+5.    For the latest pandas documentation, see http://pandas.pydata.org/pandas-docs/stable/.
+
+
+
+
+
+7.14 Intro to Data Science: pandas Series and DataFrames	263
+
+
+The initializer also may be a tuple, a dictionary, an rray, another eries or a single value. We’ll show a single value momentarily. 
+a	S 
+
+Displaying a Series
+Pandas displays a Series in two-column format with the indices left aligned in the left col-umn and the values right aligned in the right column. After listing the Series elements, pandas shows the data type (dtype) of the underlying array’s elements: 
+In [3]: grades Out[3]: 
+0  87 1    100 2  94
+dtype: int64
+Note how easy it is to display a Series in this format, compared to the corresponding code for displaying a list in the same two-column format.
+
+Creating a Series with All Elements Having the Same Value You can create a series of elements that all have the same value:
+In [4]: pd.Series(98.6, range(3)) Out[4]: 
+0    98.6 1    98.6 2    98.6
+dtype: float64
+The second argument is a one-dimensional iterable object (such as a list, an array or a range) containing the Series’ indices. The number of indices determines the number of elements. 
+
+Accessing a Series’ Elements
+You can access a Series’s elements by via square brackets containing an index:
+In [5]: grades[0] Out[5]: 87
+
+Producing Descriptive Statistics for a Series
+Series provides many methods for common tasks including producing various descriptive statistics. Here we show count, mean, min, max and std (standard deviation):
+In [6]: grades.count() Out[6]: 3
+
+In [7]: grades.mean() Out[7]: 93.66666666666667
+
+In [8]: grades.min() Out[8]: 87
+
+In [9]: grades.max() Out[9]: 100
+
+In [10]: grades.std() Out[10]: 6.506407098647712
+
+
+
+
+
+
+264 Array-Oriented Programming with NumPy
+
+
+Each of these is a functional-style reduction. Calling Series method describe produces all these stats and more:
+In [11]: grades.describe() Out[11]: 
+count      3.000000 mean   93.666667 std     6.506407 min    87.000000 25%    90.500000 50%    94.000000 75%    97.000000 max   100.000000 dtype: float64
+The 25%, 50% and 75% are quartiles:
+•	50% represents the median of the sorted values.
+•	25% represents the median of the first half of the sorted values.
+•	75% represents the median of the second half of the sorted values.
+For the quartiles, if there are two middle elements, then their average is that quartile’s median. We have only three values in our Series, so the 25% quartile is the average of 87 and 94, and the 75% quartile is the average of 94 and 100. Together, the interquartile range is the 75% quartile minus the 25% quartile, which is another measure of dispersion, like standard deviation and variance. Of course, quartiles and interquartile range are more useful in larger datasets.
+
+Creating a Series with Custom Indices
+You can specify custom indices with the index keyword argument:
+In [12]: grades = pd.Series([87, 100, 94], index=['Wally', 'Eva', 'Sam'])
+
+In [13]: grades Out[13]: 
+Wally     87 Eva   100 Sam    94 dtype: int64
+In this case, we used string indices, but you can use other immutable types, including inte-gers not beginning at 0 and nonconsecutive integers. Again, notice how nicely and con-cisely pandas formats a Series for display. 
+
+Dictionary Initializers
+If you initialize a Series with a dictionary, its keys become the Series’ indices, and its values become the Series’ element values:
+In [14]: grades = pd.Series({'Wally': 87, 'Eva': 100, 'Sam': 94})
+
+In [15]: grades Out[15]: 
+Wally     87 Eva   100 Sam    94 dtype: int64
+
+
+
+
+
+7.14 Intro to Data Science: pandas Series and DataFrames	265
+
+
+Accessing Elements of a Series Via Custom Indices
+In a Series with custom indices, you can access individual elements via square brackets containing a custom index value:
+In [16]: grades['Eva'] Out[16]: 100
+If the custom indices are strings that could represent valid Python identifiers, pandas auto-matically adds them to the Series as attributes that you can access via a dot (.), as in:
+In [17]: grades.Wally Out[17]: 87
+Series also has built-in attributes. For example, the dtype attribute returns the underly-ing array’s element type:
+In [18]: grades.dtype Out[18]: dtype('int64')
+and the values attribute returns the underlying array:
+In [19]: grades.values
+Out[19]: array([ 87, 100,  94])
+
+Creating a Series of Strings 
+If a Series contains strings, you can use its str attribute to call string methods on the elements. First, let’s create a Series of hardware-related strings:
+In [20]: hardware = pd.Series(['Hammer', 'Saw', 'Wrench'])
+
+In [21]: hardware Out[21]: 
+0    Hammer 1    Saw 2    Wrench
+dtype: object
+Note that pandas also right-aligns string element values and that the dtype for strings is object.
+Let’s call string method contains on each element to determine whether the value of each element contains a lowercase 'a': 
+In [22]: hardware.str.contains('a') Out[22]: 
+0  True 1  True 2    False dtype: bool
+Pandas returns a Series containing bool values indicating the contains method’s result for each element—the element at index 2 ('Wrench') does not contain an 'a', so its ele-ment in the resulting Series is False. Note that pandas handles the iteration internally for you—another example of functional-style programming. The str attribute provides many string-processing methods that are similar to those in Python’s string type. For a list, see: https://pandas.pydata.org/pandas-docs/stable/api.html#string-handling. 
+The following uses string method upper to produce a new Series containing the uppercase versions of each element in hardware:
+
+
+
+
+
+
+266 Array-Oriented Programming with NumPy
+
+
+In [23]: hardware.str.upper() Out[23]: 
+0    HAMMER 1    SAW 2    WRENCH
+dtype: object
+
+Self Check
+1	(IPython Session) Use the NumPy’s random-number generation to create an rray of five random integers that represent summertime temperatures in the range 60–100, then perform the following tasks:
+a 
+a) Convert the array into the Series named temperatures and display it. b) Determine the lowest, highest and average temperatures.
+c) Produce descriptive statistics for the Series. Answer:
+In [1]: import numpy as np
+
+In [2]: import pandas as pd
+
+In [3]: temps = np.random.randint(60, 101, 6)
+
+In [4]: temperatures = pd.Series(temps)
+
+In [5]: temperatures Out[5]: 
+0  98 1  62 2  63 3  70 4  69
+dtype: int64
+
+In [6]: temperatures.min() Out[6]: 62
+
+In [7]: temperatures.max() Out[7]: 98
+
+In [8]: temperatures.mean() Out[8]: 72.4
+
+In [9]: temperatures.describe() Out[9]: 
+count     5.000000 mean  72.000000 std   14.741099 min   62.000000 25%   63.000000 50%   69.000000 75%   70.000000 max   98.000000 dtype: float64
+
+
+
+
+
+7.14 Intro to Data Science: pandas Series and DataFrames	267
+
+
+7.14.2 DataFrames 
+A DataFrame is an enhanced two-dimensional array. Like Series, DataFrames can have custom row and column indices, and offer additional operations and capabilities that make them more convenient for many data-science oriented tasks. DataFrames also sup-port missing data. Each column in a DataFrame is a Series. The Series representing each column may contain different element types, as you’ll soon see when we discuss loading datasets into DataFrames.
+
+Creating a DataFrame from a Dictionary
+Let’s create a DataFrame from a dictionary that represents student grades on three exams:
+In [1]: import pandas as pd
+
+In [2]: grades_dict = {'Wally': [87, 96, 70], 'Eva': [100, 87, 90],
+ ...: 	  'Sam': [94, 77, 90], 'Katie': [100, 81, 82],
+ ...: 	 'Bob': [83, 65, 85]}
+ ...: 
+
+In [3]: grades = pd.DataFrame(grades_dict)
+
+In [4]: grades Out[4]: 
+ Wally  Eva  Sam  Katie  Bob 0  87  100   94    100   83
+
+1  96   87   77 2  70   90   90 
+
+ 81   65
+ 82   85
+
+Pandas displays DataFrames in tabular format with the indices left aligned in the index col-umn and the remaining columns’ values right aligned. The dictionary’s keys become the column names and the values associated with each key become the element values in the corresponding column. Shortly, we’ll show how to “flip” the rows and columns. By default, the row indices are auto-generated integers starting from 0.
+
+Customizing a DataFrame’s Indices with the index Attribute 
+We could have specified custom indices with the index keyword argument when we cre-ated the DataFrame, as in:
+pd.DataFrame(grades_dict, index=['Test1', 'Test2', 'Test3'])
+Let’s use the index attribute to change the DataFrame’s indices from sequential integers to labels:
+In [5]: grades.index = ['Test1', 'Test2', 'Test3']
+
+In [6]: grades Out[6]: 
+  Wally  Eva  Sam  Katie  Bob Test1     87  100   94    100   83 Test2     96   87   77     81   65 Test3     70   90   90     82   85
+When specifying the indices, you must provide a one-dimensional collection that has the same number of elements as there are rows in the DataFrame; otherwise, a ValueError occurs. Series also provides an index attribute for changing an existing Series’ indices.
+
+
+
+
+
+
+268 Array-Oriented Programming with NumPy
+
+
+Accessing a DataFrame’s Columns 
+One benefit of pandas is that you can quickly and conveniently look at your data in many different ways, including selecting portions of the data. Let’s start by getting Eva’s grades by name, which displays her column as a Series:
+In [7]: grades['Eva'] Out[7]: 
+Test1    100 Test2     87 Test3     90
+Name: Eva, dtype: int64
+If a DataFrame’s column-name strings are valid Python identifiers, you can use them as attributes. Let’s get Sam’s grades with the Sam attribute: 
+In [8]: grades.Sam Out[8]: 
+Test1    94 Test2    77 Test3    90
+Name: Sam, dtype: int64
+
+
+Selecting Rows via the loc and iloc Attributes
+Though DataFrames support indexing capabilities with [], the pandas documentation rec-ommends using the attributes loc, iloc, at and iat, which are optimized to access Data-Frames and also provide additional capabilities beyond what you can do only with []. Also, the documentation states that indexing with [] often produces a copy of the data, which is a logic error if you attempt to assign new values to the DataFrame by assigning to the result of the [] operation.
+You can access a row by its label via the DataFrame’s loc attribute. The following lists all the grades in the row 'Test1': 
+In [9]: grades.loc['Test1'] Out[9]: 
+Wally     87 Eva   100 Sam    94 Katie    100 Bob    83
+Name: Test1, dtype: int64
+You also can access rows by integer zero-based indices using the iloc attribute (the i in iloc means that it’s used with integer indices). The following lists all the grades in the second row:
+In [10]: grades.iloc[1] Out[10]: 
+Wally    96 Eva   87 Sam   77 Katie    81 Bob   65
+Name: Test2, dtype: int64
+
+
+
+
+
+7.14 Intro to Data Science: pandas Series and DataFrames	269
+
+
+Selecting Rows via Slices and Lists with the loc and iloc Attributes
+The index can be a slice. When using slices containing labels with loc, the range specified includes the high index ('Test3'):
+In [11]: grades.loc['Test1':'Test3'] Out[11]: 
+  Wally  Eva  Sam  Katie  Bob Test1     87  100   94    100   83 Test2     96   87   77     81   65 Test3     70   90   90     82   85
+When using slices containing integer indices with iloc, the range you specify excludes the high index (2):
+In [12]: grades.iloc[0:2] Out[12]: 
+  Wally  Eva  Sam  Katie  Bob Test1     87  100   94    100   83 Test2     96   87   77     81   65
+To select specific rows, use a list rather than slice notation with loc or iloc:
+In [13]: grades.loc[['Test1', 'Test3']] Out[13]: 
+  Wally  Eva  Sam  Katie  Bob Test1     87  100   94    100   83 Test3     70   90   90     82   85
+
+In [14]: grades.iloc[[0, 2]] Out[14]: 
+  Wally  Eva  Sam  Katie  Bob Test1     87  100   94    100   83 Test3     70   90   90     82   85
+
+Selecting Subsets of the Rows and Columns 
+So far, we’ve selected only entire rows. You can focus on small subsets of a DataFrame by selecting rows and columns using two slices, two lists or a combination of slices and lists. Suppose you want to view only Eva’s and Katie’s grades on Test1 and Test2. We can
+do that by using loc with a slice for the two consecutive rows and a list for the two non-consecutive columns:
+In [15]: grades.loc['Test1':'Test2', ['Eva', 'Katie']] Out[15]: 
+  Eva  Katie Test1  100    100 Test2   87  81
+The slice 'Test1':'Test2' selects the rows for Test1 and Test2. The list ['Eva', 'Katie'] selects only the corresponding grades from those two columns. 
+Let’s use iloc with a list and a slice to select the first and third tests and the first three columns for those tests:
+In [16]: grades.iloc[[0, 2], 0:3] Out[16]: 
+  Wally  Eva  Sam Test1     87  100   94 Test3     70   90   90
+
+
+
+
+
+
+270 Array-Oriented Programming with NumPy
+
+
+Boolean Indexing
+One of pandas’ more powerful selection capabilities is Boolean indexing. For example, let’s select all the A grades—that is, those that are greater than or equal to 90:
+In [17]: grades[grades >= 90] Out[17]: 
+       Wally    Eva   Sam  Katie  Bob Test1    NaN  100.0  94.0  100.0  NaN Test2   96.0    NaN   NaN    NaN  NaN Test3    NaN   90.0  90.0    NaN  NaN
+Pandas checks every grade to determine whether its value is greater than or equal to 90 and, if so, includes it in the new DataFrame. Grades for which the condition is False are represented as NaN (not a number) in the new DataFrame. NaN is pandas’ notation for missing values. 
+Let’s select all the B grades in the range 80–89:
+In [18]: grades[(grades >= 80) & (grades < 90)] Out[18]: 
+       Wally   Eva  Sam  Katie   Bob Test1   87.0   NaN  NaN    NaN  83.0 Test2    NaN  87.0  NaN   81.0   NaN Test3    NaN   NaN  NaN   82.0  85.0
+Pandas Boolean indices combine multiple conditions with the Python operator & (bitwise AND), not the and Boolean operator. For or conditions, use | (bitwise OR). NumPy also supports Boolean indexing for arrays, but always returns a one-dimensional array con-taining only the values that satisfy the condition.
+
+Accessing a Specific DataFrame Cell by Row and Column
+You can use a DataFrame’s at and iat attributes to get a single value from a DataFrame. Like loc and iloc, at uses labels and iat uses integer indices. In each case, the row and column indices must be separated by a comma. Let’s select Eva’s Test2 grade (87) and Wally’s Test3 grade (70)
+In [19]: grades.at['Test2', 'Eva'] Out[19]: 87
+
+In [20]: grades.iat[2, 0] Out[20]: 70
+You also can assign new values to specific elements. Let’s change Eva’s Test2 grade to 100 using at, then change it back to 87 using iat: 
+In [21]: grades.at['Test2', 'Eva'] = 100
+
+In [22]: grades.at['Test2', 'Eva'] Out[22]: 100
+
+In [23]: grades.iat[1, 2] = 87
+
+In [24]: grades.iat[1, 2] Out[24]: 87.0
+
+
+
+
+
+7.14 Intro to Data Science: pandas Series and DataFrames	271
+
+
+Descriptive Statistics
+Both eries and DataFrames have a escribe method that calculates basic descriptive sta-tistics for the data and returns them as a DataFrame. In a DataFrame, the statistics are cal-culated by column (again, soon you’ll see how to flip rows and columns):
+S 
+d 
+In [25]: grades.describe() Out[25]: 
+   Wally      Eva     Sam    Katie  	 Bob count   3.000000    3.000000   3.000000    3.000000   3.000000 mean   84.333333   92.333333  87.000000   87.666667  77.666667 std    13.203535    6.806859   8.888194   10.692677  11.015141 min    70.000000   87.000000  77.000000   81.000000  65.000000 25%    78.500000   88.500000  83.500000   81.500000  74.000000 50%    87.000000   90.000000  90.000000   82.000000  83.000000 75%    91.500000   95.000000  92.000000   91.000000  84.000000 max    96.000000  100.000000  94.000000  100.000000  85.000000
+As you can see, describe gives you a quick way to summarize your data. It nicely demon-strates the power of array-oriented programming with a clean, concise functional-style call. Pandas handles internally all the details of calculating these statistics for each column. You might be interested in seeing similar statistics on test-by-test basis so you can see how all the students performs on Tests 1, 2 and 3—we’ll show how to do that shortly.
+By default, pandas calculates the descriptive statistics with floating-point values and displays them with six digits of precision. You can control the precision and other default settings with pandas’ set_option function:
+In [26]: pd.set_option('precision', 2)
+
+In [27]: grades.describe() Out[27]: 
+  Wally   Eva    Sam   Katie    Bob count   3.00    3.00   3.00    3.00   3.00 mean   84.33   92.33  87.00   87.67  77.67 std    13.20    6.81   8.89   10.69  11.02 min    70.00   87.00  77.00   81.00  65.00 25%    78.50   88.50  83.50   81.50  74.00 50%    87.00   90.00  90.00   82.00  83.00 75%    91.50   95.00  92.00   91.00  84.00 max    96.00  100.00  94.00  100.00  85.00
+For student grades, the most important of these statistics is probably the mean. You can calculate that for each student simply by calling mean on the DataFrame:
+In [28]: grades.mean() Out[28]: 
+Wally    84.33 Eva   92.33 Sam   87.00 Katie    87.67 Bob   77.67 dtype: float64
+In a moment, we’ll show how to get the average of all the students’ grades on each test in one line of additional code.
+
+
+
+
+
+
+272 Array-Oriented Programming with NumPy
+
+
+Transposing the DataFrame with the T Attribute
+You can quickly transpose the rows and columns—so the rows become the columns, and the columns become the rows—by using the T attribute:
+In [29]: grades.T Out[29]: 
+  Test1  Test2  Test3 Wally     87   96     70
+
+Eva   100  Sam    94  
+
+ 87     90
+ 77     90
+
+Katie    100   81     82 Bob    83   65     85
+T returns a transposed view (not a copy) of the DataFrame.
+Let’s assume that rather than getting the summary statistics by student, you want to get them by test. Simply call describe on grades.T, as in:
+In [30]: grades.T.describe() Out[30]: 
+   Test1  Test2  Test3 count    5.00   5.00   5.00 mean    92.80  81.20  83.40 std   7.66  11.54   8.23 min     83.00  65.00  70.00 25%     87.00  77.00  82.00 50%     94.00  81.00  85.00 75%    100.00  87.00  90.00 max    100.00  96.00  90.00
+To see the average of all the students’ grades on each test, just call mean on the T attribute:
+In [31]: grades.T.mean() Out[31]: 
+Test1    92.8 Test2    81.2 Test3    83.4 dtype: float64
+
+Sorting by Rows by Their Indices
+You’ll often sort data for easier readability. You can sort a DataFrame by its rows or col-umns, based on their indices or values. Let’s sort the rows by their indices in descending order using sort_index and its keyword argument scending=False (the default is to sort in ascending order). This returns a new DataFrame containing the sorted data:
+a 
+In [32]: grades.sort_index(ascending=False) Out[32]: 
+  Wally  Eva  Sam  Katie  Bob Test3     70   90   90     82   85 Test2     96   87   77     81   65 Test1     87  100   94    100   83
+
+Sorting by Column Indices
+Now let’s sort the columns into ascending order (left-to-right) by their column names. Passing the axis=1 keyword argument indicates that we wish to sort the column indices, rather than the row indices—axis=0 (the default) sorts the row indices:
+
+
+
+
+
+7.14 Intro to Data Science: pandas Series and DataFrames	273
+
+
+In [33]: grades.sort_index(axis=1) Out[33]: 
+  Bob  Eva  Katie  Sam  Wally Test1   83  100    100   94     87
+
+Test2   65   87 Test3   85   90 
+
+ 81   77     96
+ 82   90     70
+
+
+Sorting by Column Values
+Let’s assume we want to see Test1’s grades in descending order so we can see the students’ names in highest-to-lowest grade order. We can call the method sort_values as follows:
+In [34]: grades.sort_values(by='Test1', axis=1, ascending=False) Out[34]: 
+  Eva  Katie  Sam  Wally  Bob Test1  100    100   94     87   83
+
+Test2   87 Test3   90 
+
+ 81   77     96   65
+ 82   90     70   85
+
+The by and axis keyword arguments work together to determine which values will be sorted. In this case, we sort based on the column values (axis=1) for Test1. 
+Of course, it might be easier to read the grades and names if they were in a column, so we can sort the transposed ataFrame instead. Here, we did not need to specify the xis keyword argument, because sort_values sorts data in a specified column by default: 
+D	a 
+In [35]: grades.T.sort_values(by='Test1', ascending=False) Out[35]: 
+  Test1  Test2  Test3 Eva   100   87     90 Katie    100   81     82 Sam    94   77     90 Wally     87   96     70 Bob    83   65     85
+Finally, since you’re sorting only Test1’s grades, you might not want to see the other tests at all. So, let’s combine selection with sorting:
+In [36]: grades.loc['Test1'].sort_values(ascending=False) Out[36]: 
+Katie    100 Eva   100 Sam    94 Wally     87 Bob    83
+Name: Test1, dtype: int64
+
+Copy vs. In-Place Sorting
+By default the sort_index and sort_values return a copy of the original DataFrame, which could require substantial memory in a big data application. You can sort the Data-Frame in place, rather than copying the data. To do so, pass the keyword argument inplace=True to either sort_index or sort_values. 
+
+We’ve shown many pandas Series and DataFrame features. In the next chapter’s Intro to Data Science section, we’ll use Series and DataFrames for data munging—clean-ing and preparing data for use in your database or analytics software. 
+
+
+
+
+
+
+274 Array-Oriented Programming with NumPy
+
+
+Self Check
+1	(IPython Session) Given the following dictionary;
+temps = {'Mon': [68, 89], 'Tue': [71, 93], 'Wed': [66, 82],
+ 'Thu': [75, 97], 'Fri': [62, 79]}
+perform the following tasks:
+a) Convert the dictionary into the DataFrame named temperatures with 'Low' and 'High' as the indices, then display the DataFrame.
+b) Use the column names to select only the columns for 'Mon' through 'Wed'. c) Use the row index 'Low' to select only the low temperatures for each day.
+d) Set the floating-point precision to 2, then calculate the average temperature for
+
+
+e) Answer:
+
+each day.
+Calculate the average low and high temperatures.
+
+In [1]: import pandas as pd
+
+In [2]: temps = {'Mon': [68, 89], 'Tue': [71, 93], 'Wed': [66, 82],
+ ...: 	 'Thu': [75, 97], 'Fri': [62, 79]}
+ ...: 
+
+In [3]: temperatures = pd.DataFrame(temps, index=['Low', 'High'])  # (a)
+
+In [4]: temperatures  # (a) Out[4]: 
+ Mon  Tue  Wed  Thu  Fri Low    68   71   66   75   62 High   89   93   82   97   79
+
+In [5]: temperatures.loc[:, 'Mon':'Wed']  # (b) Out[5]: 
+ Mon  Tue  Wed Low    68   71   66 High   89   93   82
+
+In [6]: temperatures.loc['Low']  # (c) Out[6]: 
+Mon    68 Tue    71 Wed    66 Thu    75 Fri    62
+Name: Low, dtype: int64
+
+In [7]: pd.set_option('precision', 2)  # (d)
+
+In [8]: temperatures.mean()  # (d) Out[8]: 
+Mon    78.5 Tue    82.0 Wed    74.0 Thu    86.0 Fri    70.5 dtype: float64
+
+
+
+
+
+
+7.15 Wrap-Up	275
+
+
+
+In [9]: temperatures.mean(axis=1)  # (e) Out[9]: 
+Low     68.4 High    88.0 dtype: float64
+
+7.15 Wrap-Up
+This chapter explored the use of NumPy’s high-performance ndarrays for storing and retrieving data, and for performing common data manipulations concisely and with reduced chance of errors with functional-style programming. We refer to ndarrays simply by their synonym, arrays. 
+The chapter examples demonstrated how to create, initialize and refer to individual elements of one- and two-dimensional arrays. We used attributes to determine an array’s size, shape and element type. We showed functions that create arrays of 0s, 1s, specific values or ranges values. We compared list and array performance with the IPython %timeit magic and saw that arrays are up to two orders of magnitude faster. 
+We used array operators and NumPy universal functions to perform element-wise calculations on every element of arrays that have the same shape. You also saw that NumPy uses broadcasting to perform element-wise operations between arrays and scalar values, and between arrays of different shapes. We introduced various built-in array methods for performing calculations using all elements of an array, and we showed how to perform those calculations row-by-row or column-by-column. We demonstrated vari-ous array slicing and indexing capabilities that are more powerful than those provided by Python’s built-in collections. We demonstrated various ways to reshape arrays. We dis-cussed how to shallow copy and deep copy arrays and other Python objects. 
+In the Intro to Data Science section, we began our multisection introduction to the popular pandas library that you’ll use in many of the data science case study chapters. You learned that many big data applications need more flexible collections than NumPy’s arrays, collections that support mixed data types, custom indexing, missing data, data that’s not structured consistently and data that needs to be manipulated into forms appro-priate for the databases and data analysis packages you use. 
+We showed how to create and manipulate pandas array-like one-dimensional Series and two-dimensional DataFrames. We customized Series and DataFrame indices. You saw pandas’ nicely formatted outputs and customized the precision of floating-point val-ues. We showed various ways to access and select data in Series and DataFrames. We used method describe to calculate basic descriptive statistics for Series and DataFrames. We showed how to transpose DataFrame rows and columns via the T attribute. You saw several ways to sort DataFrames using their index values, their column names, the data in their rows and the data in their columns. You’re now familiar with four powerful array-like col-lections—lists, arrays, Series and DataFrames—and the contexts in which to use them. We’ll add a fifth—tensors—in the “Deep Learning” chapter.
+In the next chapter, we take a deeper look at strings, string formatting and string methods. We also introduce regular expressions, which we’ll use to match patterns in text. The capabilities you’ll learn will help you prepare for the “Natural Language Processing (NLP)” chapter and other key data science chapters. In the next chapter’s Intro to Data Science section, we’ll introduce pandas data munging—preparing data for use in your
+
+
+
+
+
+
+276 Array-Oriented Programming with NumPy
+
+
+database or analytics software. In subsequent chapters, we’ll use pandas for basic time-series analysis and introduce pandas visualization capabilities.
+
+Exercises
+Use IPython sessions for each exercise where practical. Each time you create or modify an arra , Series or DataFrame, display the result.
+y 
+7.1	(Filling arrays) Fill a 2-by-3 array with ones, a 3-by-3 array with zeros and a 2-by-5 array with 7s.
+7.2	(Broadcasting) Use arange to create a 2-by-2 array containing the numbers 0–3. Use broadcasting to perform each of the following operations on the original array: 
+a) Cube every element of the array.
+b) Add 7 to every element of the array.
+c) Multiply every element of the array by 2.
+7.3	(Element-Wise array Multiplication) Create a 3-by-3 array containing the even integers from 2 through 18. Create a second 3-by-3 array containing the integers from 9 down to 1, then multiply the first array by the second.
+7.4	(array from List of Lists) Create a 2-by-5 array from an argument which is a list of the two five-element lists [2, 3, 5, 7, 11] and [13, 17, 19, 23, 29].
+7.5	(Flattening arrays with flatten vs. ravel) Create a 2-by-3 array containing the first six powers of 2 beginning with 20. Flatten the array first with method flatten, then with ravel. In each case, display the result then display the original array to show that it was unmodified. 
+7.6	(Research: array Method astype) Research in the NumPy documentation the array method astype, which converts an array’s elements to another type. Use inspace and reshape to create a 2-by-3 array with the values 1.1, 2.2, …, 6.6. Then use astype to convert the array to an array of integers.
+l 
+7.7	(Challenge Project: Reimplement NumPy array Output) You saw that NumPy out-puts two-dimensional arrays in a nice column-based format that right-aligns every element in a field width. The field width’s size is determined by the rray element value that requires the most character positions to display. To understand how powerful it is to have this for-matting simply built-in, write a function that reimplements NumPy’s array formatting for two-dimensional rrays using loops. Assume the rray contains only positive integer values.
+a 
+a	a 
+7.8	(Challenge Project: Reimplement ataFrame Output) You saw that pandas displays DataFrames in an attractive column-based format with row and column labels. The values within each column are right aligned in the same field width, which is determined by that column’s widest value. To understand how powerful it is to have this formatting built-in, write a function that reimplements DataFrame formatting using loops. Assume the Data-Frame contains only positive integer values and that both the row and column labels are each integer values beginning at 0.
+D 
+7.9	(Indexing and Slicing arrays) Create an array containing the values 1–15, reshape it into a 3-by-5 array, then use indexing and slicing techniques to perform each of the following operations:
+a) Select row 2.
